@@ -26,20 +26,15 @@ const { data: operator, error: operatorError } = await supabase
   .from("profiles").select("id").eq("role", "admin").eq("active", true).limit(1).single();
 assert.ifError(operatorError);
 
-const { error: authError } = await supabase.from("authorizations").upsert({
-  location_id: location.id,
-  plate_number: plate,
-  valid_from: new Date(Date.now() - 86400000).toISOString().slice(0, 10),
-  valid_until: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
-  start_time: "00:00:00",
-  end_time: "23:59:00",
-  allowed_weekdays: [1,2,3,4,5,6,7],
-  allowed_gate_ids: [gate.id],
-  allowed_directions: ["IN", "OUT"],
-  active: true,
-  notes: marker
-}, { onConflict: "location_id,plate_number" });
-assert.ifError(authError);
+const { data: authorization, error: authorizationError } = await supabase
+  .from("authorizations")
+  .select("id")
+  .eq("location_id", location.id)
+  .eq("plate_number", plate)
+  .eq("active", true)
+  .single();
+assert.ifError(authorizationError);
+assert.ok(authorization?.id, "Dedicated race-test authorization must exist");
 
 await supabase.from("active_vehicle_state")
   .delete()
