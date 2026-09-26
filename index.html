@@ -1,0 +1,1066 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VACS V21 report automation engine— CREATED BY: Mbah Pri</title>
+<style>
+:root{--bg:#eef2f7;--nav:#0f172a;--text:#172033;--muted:#68768b;--line:#dbe2ea;--blue:#2563eb;--green:#15803d;--red:#dc2626;--orange:#c56a08;--dark:#111827}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,sans-serif}header{background:var(--nav);color:#fff;padding:18px 14px}h1{margin:0 0 4px;font-size:23px}.sub{color:#b8c2d0;font-size:12px}.credit{margin-top:7px;font-size:12px;font-weight:900}.status{float:right;padding:7px 10px;border-radius:99px;background:#6b2733;font-size:11px;font-weight:900}.online{background:#145b3b}.clear{clear:both}main{max-width:1180px;margin:auto;padding:13px}.nav{display:flex;gap:7px;overflow:auto;margin-bottom:13px}.tab,.btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 13px;font-weight:900;white-space:nowrap}.tab.active{background:var(--blue);color:#fff}.gdrPresetBtn.active{background:var(--blue);color:#fff}.gdrBar{position:relative;z-index:5}.gdrPresets{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.gdrPresets .btn{flex:1 1 auto;min-width:84px}.panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 7px 22px #1520330b}.label{font-size:11px;font-weight:900;color:var(--muted);margin-bottom:8px}.hint{font-size:12px;color:var(--muted);line-height:1.45}.search{width:100%;height:56px;border:3px solid #cbd5e1;border-radius:15px;padding:0 14px;font-size:20px;font-weight:800}.profile{display:none}.profile.show{display:block}.plate{font-size:28px;font-weight:900}.owner{font-size:20px;font-weight:800;margin-top:4px}.meta,.vehicle{color:var(--muted);margin-top:6px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.btn{cursor:pointer}.btn:disabled{opacity:.45}.blue{background:var(--blue);color:#fff}.green{background:var(--green);color:#fff}.red{background:var(--red);color:#fff}.orange{background:var(--orange);color:#fff}.dark{background:var(--dark);color:#fff}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}.stat b{display:block;font-size:22px}.stat span{font-size:9px;font-weight:900;color:var(--muted)}.cc{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.cc .stat b{font-size:24px}.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.gateSearchField{grid-column:1/-1}.gateSearchField textarea{width:100%;min-height:112px;resize:vertical;border:2px solid #cbd5e1;border-radius:14px;padding:12px 14px;background:#fff;font-size:20px;font-weight:800;line-height:1.45;display:block}.gateNotesField textarea{width:100%;min-height:86px;resize:vertical;border:2px solid #cbd5e1;border-radius:14px;padding:11px 13px;background:#fff;font-size:16px;line-height:1.4}.gateNotesField{margin-top:10px}.field label{display:block;font-size:10px;font-weight:900;color:var(--muted);margin-bottom:4px}.field input,.field select{width:100%;height:41px;border:1px solid var(--line);border-radius:10px;padding:0 9px;background:#fff}.result{display:none;padding:11px;border-radius:11px;margin-top:8px;font-weight:800}.result.show{display:block}.ok{background:#e9f7ef;color:#096b3b}.err{background:#fdecec;color:#9b1c1c}.warn{background:#fff5df;color:#8a4b00}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:850px}.table th,.table td{padding:8px;border-bottom:1px solid var(--line);font-size:11px;text-align:left}.table th{background:#f5f7fa}.empty{padding:20px;text-align:center;color:var(--muted);border:2px dashed #d6dde7;border-radius:14px}.toast{position:fixed;left:12px;right:12px;bottom:12px;background:#111827;color:#fff;padding:12px;border-radius:12px;display:none;z-index:30;font-weight:800}.toast.show{display:block}.pill{display:inline-block;padding:4px 7px;border-radius:99px;font-size:9px;font-weight:900}.pgreen{background:#dcfce7;color:#166534}.pred{background:#fee2e2;color:#991b1b}.porange{background:#ffedd5;color:#9a3412}.small{font-size:11px}.dashboardTools{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:10px}.categoryCard{border-left:5px solid #1769e0}.ccAccessMeta{font-size:10px;color:var(--muted);font-weight:800;line-height:1.35}@media(max-width:520px){.dashboardTools{grid-template-columns:1fr 1fr}.dashboardTools .btn{grid-column:1/-1}}@media(max-width:800px){.grid,.cc{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.formgrid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.cc{grid-template-columns:repeat(2,1fr)}main{padding:10px}.stat{padding:10px}.stat b{font-size:20px}}@media print{.nav,.actions,header .status,.credit{display:none!important}body{background:#fff}.card{box-shadow:none}}
+
+.multiSearchHead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}.multiSearchHead span{font-size:10px;color:var(--muted)}.multiSearchTools{display:flex;gap:8px;margin-bottom:8px}.multiSearchTools .btn{padding:7px 10px;font-size:10px}.multiVehicleList{display:grid;gap:6px}.multiVehicleItem{display:flex;gap:9px;align-items:flex-start;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}.multiVehicleItem input{margin-top:3px;accent-color:#1769e0}.multiVehicleItem span{display:flex;flex-direction:column;gap:3px;min-width:0}.multiVehicleItem b{font-size:13px}.multiVehicleItem small{font-size:10px;color:var(--muted);white-space:normal}.batchResults{display:grid;gap:5px}.batchResult{display:flex;justify-content:space-between;gap:10px;padding:7px 9px;border-radius:8px;font-size:10px}.batchResult.ok{background:#dcfce7;color:#166534}.batchResult.err{background:#fee2e2;color:#991b1b}.batchResult span{font-weight:700;text-align:right}@media(max-width:520px){.gateSearchField textarea{min-height:130px;font-size:18px}.gateNotesField textarea{min-height:90px;font-size:15px}}.masterEditList{display:grid;gap:7px}.masterEditItem{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff}.masterEditInfo{display:flex;flex-direction:column;gap:3px;min-width:0}.masterEditInfo b{font-size:15px}.masterEditInfo strong{font-size:13px}.masterEditInfo small{font-size:10px;color:var(--muted);line-height:1.35}.masterEditBtn{flex:0 0 auto}@media(max-width:520px){.masterEditItem{align-items:flex-start}.masterEditBtn{padding:9px 10px}}.robotSteps{display:flex;flex-direction:column;gap:4px;margin-top:8px}.robotStep{display:flex;align-items:center;gap:8px;font-size:12px;padding:6px 10px;border-radius:8px;background:#f5f7fa;color:var(--muted)}.robotStep .dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center;font-size:10px}.robotStep.done{background:#eafaf0;color:#166534}.robotStep.done .dot{border-color:#16a34a;background:#16a34a;color:#fff}.robotStep.fail{background:#fdecec;color:#b91c1c}.robotStep.fail .dot{border-color:#b91c1c;background:#b91c1c;color:#fff}.robotStep.active .dot{border-color:#2563eb}.robotQC{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:12px;font-weight:800}.robotQC.ok{background:#eafaf0;color:#166534;border:1px solid #16a34a}.robotQC.warn{background:#fff8e1;color:#92400e;border:1px solid #f59e0b}.robotQC.fail{background:#fdecec;color:#b91c1c;border:1px solid #b91c1b}.robotQCDiag{margin-top:8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;color:#475569;font-size:11px;line-height:1.45}.robotQCDiag summary{cursor:pointer;font-weight:800;color:#334155}.robotQCDiag hr{border:0;border-top:1px solid #e2e8f0;margin:7px 0}.vehicleSummaryHead{padding:12px;border:1px solid var(--line);border-radius:14px;background:#f8fafc}.insideBig{font-size:28px;font-weight:900;line-height:1.1;color:var(--text)}.insideBig span{font-size:13px;font-weight:700;color:var(--muted)}.insideExplanation{margin-top:10px;padding:11px 12px;border-radius:12px;background:#eef6ff;color:#334155;font-size:12px;line-height:1.5}.insideHistoryList{margin-top:10px;display:grid;gap:7px}.insideHistory{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}.insideHistory summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;cursor:pointer}.insideHistory summary::-webkit-details-marker{display:none}.insideHistory summary span{display:flex;flex-direction:column;gap:2px}.insideHistory summary small{font-size:10px;color:var(--muted);font-weight:600}.insideHistory summary strong{font-size:13px}.insideHistoryRows{border-top:1px solid var(--line);padding:7px 10px}.insideVehicle{padding:8px 2px;border-bottom:1px solid #eef2f7;display:flex;flex-direction:column;gap:2px}.insideVehicle:last-child{border-bottom:0}.insideVehicle b{font-size:13px}.insideVehicle span{font-size:11px;color:#475569}.insideVehicle small{font-size:10px;color:var(--muted)}</style></head><body>
+<div id="introOverlay" style="position:fixed;inset:0;z-index:99999;background:#05070d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:20px;text-align:center">
+  <div style="position:relative;width:100%;max-width:360px">
+    <video id="introVideo" src="video/app.mp4" autoplay playsinline style="width:100%;max-height:65vh;border-radius:16px;box-shadow:0 15px 45px rgba(0,0,0,.55);background:#000;display:block"></video>
+    <button id="introUnmuteBtn" type="button" style="display:none;position:absolute;bottom:12px;right:12px;border:none;border-radius:999px;background:rgba(0,0,0,.65);color:#fff;font-weight:900;font-size:13px;padding:9px 14px;cursor:pointer">🔊 AKTIFKAN SUARA</button>
+  </div>
+  <button id="introContinueBtn" type="button" disabled style="padding:14px 34px;border:none;border-radius:999px;background:#2563eb;color:#fff;font-weight:900;font-size:16px;letter-spacing:.3px;cursor:not-allowed;opacity:.4;transition:opacity .2s">LANJUTKAN ➜</button>
+  <div id="introHint" style="color:#ff1a1a;font-size:20px;font-weight:900;text-shadow:0 0 8px rgba(255,26,26,.85),0 0 18px rgba(255,26,26,.6);animation:introPulse 1s ease-in-out infinite">Klik Aktifkan Suara dulu untuk bisa melanjutkan</div>
+</div>
+<style>@keyframes introPulse{0%,100%{opacity:1}50%{opacity:.55}}</style>
+<header><button id="refreshAllBtn" type="button" style="float:right;margin:0 0 0 8px;padding:8px 14px;border:0;border-radius:10px;background:#16a34a;color:#fff;font-weight:900;cursor:pointer">🔄 REFRESH DATA SPREADSHEET</button><span id="status" class="status">● CONNECTING...</span><h1>VACS V21</h1><div class="sub">Vehicle Access Control System • Central Multi-Device</div><div class="credit">CREATED BY: Mbah Pri</div><div class="clear"></div></header>
+<main>
+<nav class="nav">
+<button class="tab active" data-tab="gate">🚪 GATE</button><button class="tab" data-tab="command">🛡 COMMAND CENTER</button><button class="tab" data-tab="access">👤 ACCESS PASS</button><button class="tab" data-tab="master">📥 MASTER</button><button class="tab" data-tab="current">🚗 CURRENTLY INSIDE</button><button class="tab" data-tab="exceptions">⚠ EXCEPTIONS</button><button class="tab" data-tab="audit">📋 AUDIT EVENT</button><button class="tab" data-tab="alerts">🔔 ALERTS</button><button class="tab" data-tab="backup">💾 BACKUP</button><button class="tab" data-tab="report">📊 REPORT</button><button class="tab" data-tab="robot">🤖 OFFICE ROBOT</button>
+</nav>
+<div class="card gdrBar" id="gdrBar"><div class="label">📅 GLOBAL DATE RANGE — DIPAKAI OLEH REPORT • OFFICE ROBOT • SUMMARY • ACCESS TYPE • CHART • EXCEL • PDF</div><div class="hint">Satu periode untuk semua data historis. CURRENTLY INSIDE tetap LIVE dan tidak memakai periode ini.</div><div class="gdrPresets"><button type="button" class="btn gdrPresetBtn" data-gdr-preset="day">1 HARI</button><button type="button" class="btn gdrPresetBtn" data-gdr-preset="week">1 MINGGU</button><button type="button" class="btn gdrPresetBtn" data-gdr-preset="month">1 BULAN</button><button type="button" class="btn gdrPresetBtn" data-gdr-preset="custom">CUSTOM</button></div><div class="formgrid"><div class="field"><label>FROM DATE</label><input type="date" class="gdrFrom" data-gdr="from" aria-label="Global From Date"></div><div class="field"><label>TO DATE</label><input type="date" class="gdrTo" data-gdr="to" aria-label="Global To Date"></div></div><div id="gdrError" class="result"></div><div class="gdrReadout hint" style="margin-top:6px;font-weight:900;color:var(--text)">Periode aktif: —</div></div>
+
+<section id="gate" class="panel active">
+<div class="card"><div class="label">GATE TRANSACTION</div><div class="formgrid"><div class="field"><label>GATE</label><select id="gateSelect"></select></div><div class="field"><label>DEVICE / OPERATOR</label><input id="deviceId" placeholder="Gate device / operator"></div><div class="field gateSearchField"><label>SEARCH VEHICLE — MULTI VEHICLE <span id="masterCacheStatus" style="font-size:11px;font-weight:700;opacity:.9"></span></label><textarea id="search" rows="4" placeholder="Ketik nomor kendaraan...
+Bisa banyak kendaraan: 1 nomor/baris atau pisahkan koma
+Contoh:
+5067
+Sarah
+7896"></textarea></div></div><div id="result" class="result"></div><div class="field gateNotesField"><label>KETERANGAN</label><textarea id="gateNotes" placeholder="Tulis keterangan transaksi di sini..."></textarea></div></div>
+<div id="profile" class="card profile"><div class="label">REGISTERED VEHICLE</div><div id="plate" class="plate">—</div><div id="owner" class="owner">—</div><div id="meta" class="meta">—</div><div id="vehicle" class="vehicle">—</div><div class="actions"><button id="inBtn" class="btn green" disabled type="button">✓ VEHICLE IN</button><button id="outBtn" class="btn red" disabled type="button">↗ VEHICLE OUT</button></div></div>
+<div class="card"><div class="label">VACS COMMAND CENTER • DASHBOARD 1×24 JAM</div><div class="dashboardTools"><div class="field"><label>TANGGAL</label><input id="dashDate" type="date"></div><div class="field"><label>TYPE</label><select id="dashType"><option value="ALL">ALL</option><option>VISITOR</option><option>CONTRACTOR</option><option>VENDOR</option><option>EMPLOYEE</option><option>EMERGENCY VEHICLE</option><option>DELIVERY</option><option>TEMPORARY VEHICLE</option><option>VIP</option></select></div><button id="refreshDashboard" class="btn blue" type="button">↻ REFRESH</button></div><div class="reportMeta"><div class="stat"><b id="todayIn">—</b><span>IN HARI INI</span></div><div class="stat"><b id="todayOut">—</b><span>OUT HARI INI</span></div><div class="stat"><b id="inside">—</b><span>STILL INSIDE</span></div><div class="stat"><b id="carryoverInside">—</b><span>DARI TANGGAL SEBELUMNYA</span></div><div class="stat"><b id="carsIn">—</b><span>MOBIL IN</span></div><div class="stat"><b id="motorcyclesIn">—</b><span>MOTOR IN</span></div></div><div id="carryoverDashboard" class="card" style="margin-top:10px;display:none"></div><div id="insideBreakdownDashboard" class="card" style="margin-top:10px"></div><div class="label" style="margin-top:12px">GRAFIK JAM MASUK / KELUAR</div><div id="hourlyChart"></div></div>
+</section>
+
+<section id="command" class="panel"><div class="card"><div class="label">🚗 RINGKASAN KENDARAAN</div><div class="hint">Angka di bawah mengikuti transaksi nyata. IN menambah kendaraan di dalam, OUT mengurangi kendaraan di dalam. Kendaraan dari tanggal sebelumnya tetap dihitung sampai benar-benar OUT.</div><div class="dashboardTools"><div class="field"><label>FROM DATE</label><input id="ccFrom" type="date" aria-label="Command Center From Date"></div><div class="field"><label>TO DATE</label><input id="ccTo" type="date" aria-label="Command Center To Date"></div><div class="field"><label>FILTER KENDARAAN</label><select id="ccType"><option value="ALL">SEMUA KENDARAAN</option></select></div><button id="refreshCC" class="btn blue" type="button">↻ REFRESH</button></div><div id="ccVehicleSummary" style="margin-top:10px"></div><div class="label" style="margin-top:14px">GRAFIK IN / OUT • MENYESUAIKAN PERIODE</div><div id="ccHourlyChart"></div></div><div class="card"><div class="label">GATE STATUS</div><div id="gateStatus" class="empty">Loading...</div></div><div class="card"><div class="label">LAST ACCESS</div><div id="lastAccess" class="empty">Loading...</div></div></section>
+<section id="access" class="panel"><div class="card"><div class="label">CREATE / REGISTER ACCESS AUTHORIZATION</div><div class="formgrid"><div class="field"><label>PERSON *</label><input id="aPerson"></div><div class="field"><label>TYPE</label><select id="aType"></select><input id="aCustomType" placeholder="Tulis Custom Access Type" style="display:none;margin-top:6px"></div><div class="field"><label>COMPANY</label><input id="aCompany"></div><div class="field"><label>PLATE</label><input id="aPlate"></div><div class="field"><label>PURPOSE</label><input id="aPurpose"></div><div class="field"><label>HOST</label><input id="aHost"></div><div class="field"><label>GATE ALLOWED</label><select id="aGate"></select></div><div class="field"><label>VALID FROM</label><input id="aFrom" type="date"></div><div class="field"><label>VALID UNTIL</label><input id="aUntil" type="date"></div><div class="field"><label>TIME FROM</label><input id="aTimeFrom" type="time" value="00:00"></div><div class="field"><label>TIME UNTIL</label><input id="aTimeUntil" type="time" value="23:59"></div></div><div class="actions"><button id="createAuth" class="btn green">✓ CREATE AUTHORIZATION</button><button id="refreshAuth" class="btn blue">↻ LOAD AUTHORIZATIONS</button></div><div id="authResult" class="result"></div></div><div class="card"><div class="label">AUTHORIZED ACCESS — OFFLINE CACHE</div><div class="hint">Authorization yang berhasil dimuat disimpan lokal untuk validasi offline. Event offline akan masuk queue dan dikirim saat koneksi kembali.</div><div class="formgrid"><div class="field"><label>PERSON</label><input id="xPerson"></div><div class="field"><label>PLATE</label><input id="xPlate"></div><div class="field"><label>GATE</label><select id="xGate"></select></div><div class="field"><label>DEVICE</label><input id="xDevice" placeholder="Offline Gate Device"></div></div><div class="actions"><button id="xIn" class="btn green">✓ AUTH IN</button><button id="xOut" class="btn red">↗ AUTH OUT</button><button id="syncNow" class="btn orange">↻ SYNC QUEUE</button></div><div id="offlineInfo" class="result"></div></div><div id="authTable" class="empty">Load authorizations.</div></section>
+<section id="exceptions" class="panel"><div class="card"><div class="label">SECURITY EXCEPTIONS / DENIED ACCESS</div><input id="exceptionSearch" class="search" style="height:45px;font-size:15px" placeholder="Cari person / plate / reason"><div class="actions"><button id="refreshExceptions" class="btn blue">↻ REFRESH</button></div></div><div id="exceptionList" class="empty">Tekan Refresh.</div></section>
+<section id="alerts" class="panel"><div class="card"><div class="label">SECURITY ALERTS</div><div class="actions"><button id="refreshAlerts" class="btn blue">↻ REFRESH</button></div></div><div id="alertList" class="empty">Tekan Refresh.</div></section>
+<section id="master" class="panel">
+<div class="card"><div class="label">➕ INPUT MANUAL / UPDATE</div><div class="hint">Nama dan Nomor Kendaraan wajib. Data lainnya boleh dilengkapi nanti.</div><div id="masterEditMode" class="result show warn" style="display:none">✏️ MODE EDIT AKTIF — Nomor kendaraan dikunci sebagai kunci data. Ubah data lain lalu tekan SIMPAN PERUBAHAN.</div><div class="formgrid">
+<div class="field"><label>NAMA</label><input id="mName"></div><div class="field"><label>NOMOR KENDARAAN *</label><input id="mPlate"></div><div class="field"><label>BAGIAN/DIVISI</label><input id="mDiv"></div><div class="field"><label>JENIS KENDARAAN</label><input id="mType" placeholder="Mobil / Motor / dll"></div><div class="field"><label>ACCESS TYPE</label><select id="mAccessType"></select><input id="mCustomAccessType" placeholder="Tulis Custom Access Type" style="display:none;margin-top:6px"></div><div class="field"><label>MODEL</label><input id="mModel"></div><div class="field"><label>WARNA KENDARAAN</label><input id="mColor"></div></div><div class="actions"><button id="saveMasterBtn" class="btn green" type="button">💾 SIMPAN / UPDATE</button><button id="clearMasterBtn" class="btn" type="button">BERSIHKAN</button></div><div id="manualResult" class="result"></div></div>
+<div class="card"><div class="label">✏️ CARI & EDIT DATA TERDAFTAR</div><div class="hint">Cari berdasarkan <b>nama, nomor kendaraan, divisi, atau data lainnya</b>. Pilih <b>EDIT</b> untuk memuat data ke form di atas. Perubahan disimpan langsung ke MASTER melalui sistem yang sama — tidak perlu membuka Spreadsheet dan ACCESS_LOG tidak diubah.</div><div class="formgrid"><div class="field" style="grid-column:1/-1"><label>CARI DATA TERDAFTAR</label><input id="masterSearch" class="search" style="height:48px;font-size:16px" placeholder="Contoh: Danang / B 1234 ABC / Security"></div></div><div class="actions"><button id="masterSearchBtn" class="btn blue" type="button">🔎 CARI DATA</button><button id="masterRefreshBtn" class="btn" type="button">↻ BERSIHKAN HASIL</button></div><div id="masterSearchResult" class="result"></div></div>
+<div class="card"><div class="label">🔐 ADMIN / DELETE</div><div class="hint">Hapus kendaraan hanya dari MASTER. ACCESS_LOG tidak ikut terhapus. Penghapusan transaksi hanya untuk koreksi admin.</div><div class="formgrid"><div class="field"><label>NOMOR KENDARAAN</label><input id="delPlate" placeholder="B 1234 ABC"></div><div class="field"><label>PIN ADMIN</label><input id="adminPin" type="password" inputmode="numeric" placeholder="PIN"></div></div><div class="actions"><button id="deleteVehicleBtn" class="btn red" type="button">🗑 HAPUS DARI MASTER</button></div><div id="deleteResult" class="result"></div></div>
+<div class="card"><div class="label">🔐 ADMIN / HAPUS ACCESS_EVENTS (RENTANG TANGGAL)</div><div class="hint">Dashboard, Command Center, dan Report membaca data dari <b>ACCESS_EVENTS</b> (bukan hanya ACCESS_LOG). Menghapus baris di Spreadsheet tab ACCESS_LOG saja TIDAK cukup — data lama tetap muncul di aplikasi selama masih ada di ACCESS_EVENTS. Gunakan form ini untuk menghapus permanen data pada rentang tanggal tertentu dari ACCESS_EVENTS. <b>Aksi ini permanen dan tidak bisa dibatalkan.</b></div><div class="formgrid"><div class="field"><label>DARI TANGGAL</label><input id="delEvFrom" type="date"></div><div class="field"><label>SAMPAI TANGGAL</label><input id="delEvTo" type="date"></div><div class="field"><label>PIN ADMIN</label><input id="delEvPin" type="password" inputmode="numeric" placeholder="PIN"></div></div><div class="actions"><button id="deleteAccessEventsBtn" class="btn red" type="button">🗑 HAPUS ACCESS_EVENTS PADA RENTANG INI</button></div><div id="deleteEventsResult" class="result"></div></div>
+<div class="card"><div class="label">📥 IMPORT EXCEL / CSV</div><div class="hint">Gunakan file master dengan kolom: Nama • Nomor Kendaraan • Bagian/Divisi • Jenis Kendaraan • Model • Warna Kendaraan • Access Type.</div><div class="drop"><input id="fileInput" type="file" accept=".xlsx,.xls,.csv,text/csv"><div class="actions" style="justify-content:center"><button id="importBtn" class="btn blue" type="button">📥 IMPORT / UPDATE MASTER</button><button id="templateBtn" class="btn orange" type="button">⬇ DOWNLOAD TEMPLATE EXCEL</button></div><div id="importResult" class="result"></div></div></div>
+</section>
+
+<section id="current" class="panel"><div class="card"><div class="label">🚗 CURRENTLY INSIDE</div><button id="refreshCurrent" class="btn blue" type="button">↻ REFRESH</button><div id="currentList" class="empty" style="margin-top:10px">Tekan Refresh.</div></div></section>
+
+<section id="audit" class="panel"><div class="card"><div class="label">📋 AUDIT EVENT</div><div class="hint">Riwayat IN/OUT yang sudah tercatat. Filter berdasarkan nama, nomor kendaraan, atau action.</div><input id="auditSearch" class="search" style="height:45px;font-size:16px" placeholder="Cari audit..."><div class="actions"><button id="refreshAudit" class="btn blue" type="button">↻ REFRESH AUDIT</button></div></div><div id="auditList" class="empty">Tekan Refresh Audit.</div></section>
+
+<section id="backup" class="panel"><div class="card"><div class="label">💾 BACKUP DATABASE</div><div class="hint">Membuat salinan Spreadsheet pusat dengan timestamp server. CREATED BY: Mbah Pri.</div><button id="backupBtn" class="btn orange" type="button">💾 BACKUP SEKARANG</button><div id="backupResult" class="result"></div></div></section>
+
+<section id="report" class="panel"><div class="card"><div class="label">📊 REPORT 1×24 JAM</div><div class="hint">Gunakan Global Date Range dan TYPE. Data dihitung sebagai session kendaraan: kendaraan yang belum OUT dari hari sebelumnya menjadi CARRY FORWARD, tetap membawa tanggal/jam IN asli, dan terus diwariskan ke setiap tanggal berikutnya sampai benar-benar OUT. Setiap tanggal menampilkan asal jumlah STILL INSIDE agar dapat dijelaskan saat audit.</div><div class="formgrid"><div class="field"><label>JENIS LAPORAN</label><select id="rPeriodType"><option value="daily">📅 HARIAN (DAILY)</option><option value="weekly">📅 MINGGUAN (WEEKLY)</option><option value="monthly">📅 BULANAN (MONTHLY)</option></select></div><div class="field"><label>TYPE</label><select id="rType"><option value="ALL">ALL</option><option>VISITOR</option><option>CONTRACTOR</option><option>VENDOR</option><option>EMPLOYEE</option><option>EMERGENCY VEHICLE</option><option>DELIVERY</option><option>TEMPORARY VEHICLE</option><option>VIP</option></select></div></div><div class="actions"><button id="generateReport" class="btn blue" type="button">📊 GENERATE REPORT</button><button id="exportReport" class="btn orange" type="button">⬇ EXPORT EXCEL</button><button id="printReport" class="btn" type="button">🖨 PRINT / PDF</button></div></div><div id="reportSummary" class="reportMeta"></div><div id="reportTable" class="empty">Pilih tanggal lalu Generate Report.</div></section>
+</main><div id="toast" class="toast"></div>
+<section id="robot" class="panel"><div class="card"><div class="label">🤖 VACS OFFICE ROBOT — AUTOMATED REPORT ENGINE</div><div class="hint">"Saya masukkan data. Serahkan sisanya kepada saya." Pilih jenis laporan lalu tekan GENERATE — robot mengumpulkan data VACS, membersihkan, memvalidasi, menghitung, membuat ringkasan &amp; grafik secara otomatis. Robot ini memanggil mesin Report/Excel/PDF VACS yang sudah ada (read-only, tidak pernah mengubah data) — bukan mesin baru yang terpisah.</div>
+<div class="formgrid">
+<div class="field"><label>JENIS LAPORAN</label><select id="robProfile"><option value="daily">📅 Laporan Akses Harian (Daily)</option><option value="weekly">📅 Laporan Mingguan (Weekly)</option><option value="monthly">📅 Laporan Bulanan (Monthly)</option><option value="current">🚗 Laporan Currently Inside</option></select></div>
+<div class="field" id="robDateField"><label>TANGGAL</label><input id="robDate" type="date"></div>
+<div class="field" id="robTypeField"><label>ACCESS TYPE</label><select id="robType"><option value="ALL">ALL</option><option>VISITOR</option><option>CONTRACTOR</option><option>VENDOR</option><option>EMPLOYEE</option><option>EMERGENCY VEHICLE</option><option>DELIVERY</option><option>TEMPORARY VEHICLE</option><option>VIP</option></select></div>
+</div>
+<div class="actions"><button id="robGenBtn" class="btn green" type="button">🤖 GENERATE REPORT — LET VACS DO IT</button></div>
+<div id="robProgress" class="empty">Robot siap. Pilih jenis laporan lalu tekan GENERATE.</div>
+</div>
+<div id="robResultWrap"></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script>
+// VACS FIX: DEVICE / OPERATOR is optional. Never throw 'device is not defined'.
+function device(){
+  try{
+    const saved=String(localStorage.getItem('vacsDeviceId')||'').trim();
+    if(saved) return saved;
+  }catch(e){}
+  const ua=String(navigator.userAgent||'').toLowerCase();
+  if(ua.includes('android')) return 'Android';
+  if(/iphone|ipad|ipod/.test(ua)) return 'iOS';
+  if(ua.includes('windows')) return 'Windows';
+  if(/macintosh|mac os/.test(ua)) return 'macOS';
+  return 'Web';
+}
+
+const GAS_API_ENDPOINTS=[
+  "https://script.google.com/macros/s/AKfycbyMKKzWvuYhxz7nFfdki0OOLZyFG7NRMLyEeuCNQ8CI_f8WnkWcmcgn53pnlg2kOCFcsg/exec"
+],CREATED_BY="Mbah Pri",$=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+let activeApiBase='';
+try{activeApiBase=localStorage.getItem('vacsApiBase')||''}catch(e){}
+function apiBases(){const a=[];GAS_API_ENDPOINTS.forEach(x=>{if(!a.includes(x))a.push(x)});return a}
+function setApiBase(base){activeApiBase=base;try{localStorage.setItem('vacsApiBase',base)}catch(e){}}
+let selected=null,lastReport=null,authCache=[];let serverOnline=false;
+const TYPES=['VISITOR','CONTRACTOR','VENDOR','EMPLOYEE','EMERGENCY VEHICLE','DELIVERY','TEMPORARY VEHICLE','VIP','STAFF','TENANT','SECURITY','SUPPORT PARTNER'];
+function accessTypeNorm(v){const t=String(v??'').trim().replace(/\s+/g,' ').toUpperCase();if(!t)return'VISITOR';if(t==='SP'||t==='SUPPORTPARTNER')return'SUPPORT PARTNER';return t}
+const IDB={name:'vacs_offline_v2',queue:'queue',master:'master',meta:'meta'};
+function toast(t){const x=$('toast');x.textContent=t;x.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>x.classList.remove('show'),3500)}
+function apiOnce_(base,p,t){return new Promise((res,rej)=>{const cb='vacs_'+Date.now()+'_'+Math.random().toString(36).slice(2),s=document.createElement('script');let done=0;const fin=(f,v)=>{if(done)return;done=1;delete window[cb];try{s.remove()}catch(e){};f(v)};window[cb]=d=>fin(res,d);s.onerror=()=>fin(rej,Error('JSONP network/CSP error'));s.src=base+'?'+new URLSearchParams({...p,callback:cb,_t:Date.now()});document.body.appendChild(s);setTimeout(()=>fin(rej,Error('JSONP timeout')),t)})}
+function apiBridgeOnce_(base,p,t){return new Promise((res,rej)=>{const id='vacs_bridge_'+Date.now()+'_'+Math.random().toString(36).slice(2),f=document.createElement('iframe');let done=0;const timer=setTimeout(()=>fin(rej,Error('Bridge timeout')),t);function fin(fn,v){if(done)return;done=1;clearTimeout(timer);window.removeEventListener('message',onmsg);try{f.remove()}catch(e){};fn(v)}function onmsg(ev){if(ev.source!==f.contentWindow)return;const d=ev.data||{};if(d.__vacsBridge!==id)return;if(d.ok===false)fin(rej,Error(d.message||'Bridge request failed'));else fin(res,d)}window.addEventListener('message',onmsg);f.style.display='none';f.src=base+'?'+new URLSearchParams({...p,bridge:'1',bridgeId:id,_t:Date.now()});document.body.appendChild(f)})}
+const isOperaMini=/Opera Mini/i.test(navigator.userAgent||'');
+function sleep_(ms){return new Promise(r=>setTimeout(r,ms))}
+async function api(p,timeout=12000,retries=1){
+  if(isOperaMini){timeout=Math.round(timeout*1.6);retries=Math.max(retries,2)}
+  const bases=apiBases();let lastErr=null;
+  for(const base of bases){
+    for(let n=0;n<=retries;n++){
+      if(n>0){console.debug('[VACS] retry',n,'action=',p&&p.action,isOperaMini?'(Opera Mini)':'');await sleep_(300*n)}
+      try{const r=await apiOnce_(base,p,timeout);if(r&&r.ok===true){setApiBase(base);return r}if(r&&r.ok===false){lastErr=Error(r.message||'Backend request failed');break}lastErr=Error('Invalid backend response')}catch(e){lastErr=e}
+    }
+    // IMPORTANT V21: mutating requests NEVER fall back to bridge after JSONP transport failure.
+    // A second transport is a second execution attempt and can create an ambiguous commit.
+    const mutatingAction=new Set(['syncQueue','access','accessAuth','registerVehicle','createAuthorization','updateAuthorizationStatus','deleteVehicle','deleteAccessLog','deleteAccessEventsRange','addGate','setAdminPin','ackAlert','resolveAlert','adminCleanupLongStay','importVehicles','backup']).has(String(p&&p.action||''));
+    if(mutatingAction)continue;
+    try{const r=await apiBridgeOnce_(base,p,Math.max(12000,Math.min(timeout,90000)));if(r&&r.ok===true){setApiBase(base);return r}if(r&&r.ok===false)lastErr=Error(r.message||'Bridge request failed')}catch(e){lastErr=e}
+  }
+  throw(lastErr||Error('Gagal menghubungi Apps Script'))
+}
+async function call(p,t=20000){
+  const a=String(p?.action||'');
+  const mutating=new Set(['syncQueue','access','accessAuth','registerVehicle','createAuthorization','updateAuthorizationStatus','deleteVehicle','deleteAccessLog','deleteAccessEventsRange','addGate','setAdminPin','ackAlert','resolveAlert','adminCleanupLongStay','importVehicles','backup']);
+  // Never blindly retry a mutating request. The eventId/idempotency layer can
+  // recover an uncertain commit, but a transport retry only adds latency and
+  // can turn a lost ACK into a second state evaluation.
+  return api(p,t,mutating.has(a)?0:(isOperaMini?2:1));
+}
+let connectionState='OFFLINE';
+function setConnectionState_(state,detail){
+  connectionState=state;
+  const el=$('status');
+  if(!el)return;
+  const map={
+    CONNECTING:['● CONNECTING • MENGHUBUNGKAN','#8a4b00',false],
+    VERIFYING:['● VERIFYING • MEMERIKSA GAS / SPREADSHEET','#8a4b00',false],
+    SYNCING:['● SYNCING • MEMUAT MASTER','#8a4b00',false],
+    LIVE:['● LIVE • SERVER ONLINE','#145b3b',true],
+    OFFLINE_READY:['● OFFLINE READY • MASTER LOKAL SIAP','#8a4b00',false],
+    OFFLINE:['● OFFLINE • SERVER TIDAK TERJANGKAU','#8a4b00',false]
+  };
+  const x=map[state]||map.OFFLINE;
+  el.textContent=x[0];el.classList.toggle('online',x[2]);el.style.background=x[1];
+  if(detail)el.title=detail;
+  serverOnline=state==='LIVE';
+}
+function online(v){if(arguments.length)setConnectionState_(v?'LIVE':'OFFLINE');return serverOnline}
+async function pingServer(){
+  const started=performance.now();
+  const r=await api({action:'ping'},12000,1);
+  if(!r.ok||!r.data||String(r.data.status||'').toUpperCase()!=='ONLINE')throw Error(r.message||'GAS/Spreadsheet tidak READY');
+  return {...r.data,clientRttMs:Math.round(performance.now()-started)};
+}
+async function health(){
+  setConnectionState_('VERIFYING','Menunggu verifikasi nyata dari Apps Script + Spreadsheet.');
+  try{
+    const d=await pingServer();
+    setConnectionState_('LIVE',`GAS ✓ • SHEET ✓ • RTT ${d.clientRttMs}ms`);
+    return d;
+  }catch(e){
+    // Timeout/transport error pertama hanya berarti verifikasi belum selesai.
+    // Jangan menyimpulkan server mati ketika Apps Script masih cold-starting.
+    setConnectionState_('CONNECTING',String(e&&e.message||e));
+    return false;
+  }
+}
+
+// Range-aware chart: 1 hari = per jam; lebih dari 1 hari = per tanggal.
+// Normalisasi tanggal harus menerima data backend seperti:
+// 2026-09-19, 19/09/2026, dan Sabtu,19/09/2026.
+function chartDateKey(v){
+  const s=String(v??'').trim();
+  if(!s)return '';
+  let m=s.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return `${m[1]}-${m[2]}-${m[3]}`;
+  m=s.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+  if(m)return `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`;
+  const d=new Date(s);
+  if(!isNaN(d))return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  return '';
+}
+function renderRangeChart(rows,from,to,opts){
+  opts=opts||{};
+  const a=chartDateKey(from),b=chartDateKey(to||from);
+  if(!a||!b||a===b) return renderHourlyChart(opts.hourly||[],opts);
+  const dates=[]; let cur=a,guard=0;
+  while(cur<=b&&guard<400){dates.push(cur);cur=gdrAddDays(cur,1);guard++}
+  const map={}; dates.forEach(d=>map[d]={date:d,in:0,out:0});
+  const trend=Array.isArray(opts.dailyTrend)?opts.dailyTrend:[];
+  if(trend.length){
+    trend.forEach(t=>{const k=chartDateKey(t.iso||t.date);if(map[k]){map[k].in+=Number(t.in||0);map[k].out+=Number(t.out||0)}});
+  }else{
+    (rows||[]).forEach(r=>{
+      const inDate=chartDateKey(r.inDate||r.date||r.inTimestamp||r.timestamp);
+      const outDate=chartDateKey(r.outDate||r.outTimestamp||r.outDateTime);
+      if(map[inDate]) map[inDate].in++;
+      if(map[outDate]) map[outDate].out++;
+    });
+  }
+  const data=dates.map(d=>map[d]);
+  const w=760,h=270,padL=38,padR=12,padT=32,padB=42;
+  const chartW=w-padL-padR,chartH=h-padT-padB,barsW=chartW/Math.max(1,data.length),bw=Math.max(3,Math.min(14,(barsW-5)/2));
+  const maxVal=Math.max(1,...data.map(x=>Math.max(x.in,x.out)));
+  const totalIn=data.reduce((a,x)=>a+x.in,0),totalOut=data.reduce((a,x)=>a+x.out,0);
+  const scale=v=>chartH*(v/maxVal);
+  let grid='',steps=4;
+  for(let i=0;i<=steps;i++){
+    const gy=padT+chartH-(chartH*i/steps),val=Math.round(maxVal*i/steps);
+    grid+=`<line x1="${padL}" y1="${gy.toFixed(1)}" x2="${w-padR}" y2="${gy.toFixed(1)}" stroke="#e2e8f0" stroke-width="1"/><text x="${padL-5}" y="${(gy+3).toFixed(1)}" font-size="9" text-anchor="end" fill="#94a3b8">${val}</text>`;
+  }
+  let bars='';
+  data.forEach((x,i)=>{
+    const bx=padL+i*barsW+(barsW-2*bw-2)/2,inH=scale(x.in),outH=scale(x.out);
+    bars+=`<rect x="${bx.toFixed(1)}" y="${(padT+chartH-inH).toFixed(1)}" width="${bw.toFixed(1)}" height="${inH.toFixed(1)}" fill="#16a34a"><title>${x.date} MASUK ${x.in}</title></rect>`;
+    bars+=`<rect x="${(bx+bw+2).toFixed(1)}" y="${(padT+chartH-outH).toFixed(1)}" width="${bw.toFixed(1)}" height="${outH.toFixed(1)}" fill="#dc2626"><title>${x.date} KELUAR ${x.out}</title></rect>`;
+    const dt=gdrParseISO(x.date),day=String(dt.getDate()).padStart(2,'0');
+    let show=true;
+    if(data.length>14) show=(i===0||i===data.length-1||dt.getDate()===1||dt.getDate()===15);
+    if(show) bars+=`<text x="${(bx+bw+1).toFixed(1)}" y="${h-12}" font-size="9" text-anchor="middle" fill="#64748b">${day}/${String(dt.getMonth()+1).padStart(2,'0')}</text>`;
+  });
+  const title=opts.title?`<text x="${padL}" y="15" font-size="11" font-weight="700" fill="#1b538b">GRAFIK HARIAN MASUK/KELUAR • ${esc(opts.title)}</text>`:'';
+  const totalTxt=`<text x="${w-padR}" y="15" font-size="10" font-weight="700" text-anchor="end" fill="#0f172a">IN: ${totalIn} • OUT: ${totalOut}</text>`;
+  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:290px;background:#ffffff">${title}${totalTxt}${grid}<line x1="${padL}" y1="${(padT+chartH).toFixed(1)}" x2="${w-padR}" y2="${(padT+chartH).toFixed(1)}" stroke="#94a3b8"/>${bars}</svg><div style="font-size:11px;color:#64748b;margin-top:4px"><span style="color:#16a34a">■</span> Masuk &nbsp; <span style="color:#dc2626">■</span> Keluar &nbsp;&nbsp; <i>Sumbu X = TANGGAL</i></div>`;
+}
+async function commandCenter(){try{gdrEnsureValid();if($('ccFrom'))$('ccFrom').value=GDR.from;if($('ccTo'))$('ccTo').value=GDR.to;const type=$('ccType').value||'ALL';const live=await call({action:'commandCenter',date:GDR.to,type},90000);if(!live.ok)throw Error(live.message||'Command Center gagal dimuat.');const d=live.data||{},ss=d.summary||{};const box=$('ccVehicleSummary');const groups=d.insideByEntryDate||[];if(box){const todayIn=Number(ss.totalIn||0),todayOut=Number(ss.totalOut||0),inside=Number(ss.totalInside||0),cars=Number(ss.cars||0),motorcycles=Number(ss.motorcycles||0);const oldGroups=groups.filter(g=>g.date!==GDR.to);const oldCount=oldGroups.reduce((a,g)=>a+Number(g.count||0),0);const todayGroup=groups.find(g=>g.date===GDR.to);const todayStill=Number(todayGroup?.count||0);const groupHtml=groups.length?groups.map(g=>{const rows=g.rows||[];return `<details class="insideHistory" ${g.date===GDR.to?'open':''}><summary><span><b>${esc(g.date===GDR.to?'HARI INI':('MASIH DARI '+hariTanggal(g.date)))}</b><small>${esc(g.date)}</small></span><strong>${Number(g.count||0)} kendaraan</strong></summary><div class="insideHistoryRows">${rows.length?rows.map(x=>`<div class="insideVehicle"><b>${esc(x.plate||'—')}</b><span>${esc(x.vehicleType||'Kendaraan')} • ${esc(x.name||'Nama belum diisi')}</span><small>Masuk: ${esc(hariTanggal(x.inDate||g.date))} ${esc(x.inTime||'')}</small></div>`).join(''):'<div class="hint">Tidak ada detail kendaraan.</div>'}</div></details>`}).join(''):'<div class="empty">Tidak ada kendaraan yang masih di dalam.</div>';box.innerHTML=`<div class="vehicleSummaryHead"><div><div class="label">KONDISI SEKARANG</div><div class="insideBig">${inside}<span> kendaraan masih di dalam</span></div></div></div><div class="cc"><div class="stat"><b>${todayIn}</b><span>IN HARI INI</span></div><div class="stat"><b>${todayOut}</b><span>OUT HARI INI</span></div><div class="stat"><b>${todayStill}</b><span>DARI IN HARI INI</span></div><div class="stat"><b>${oldCount}</b><span>DARI TANGGAL SEBELUMNYA</span></div><div class="stat"><b>${cars}</b><span>MOBIL IN</span></div><div class="stat"><b>${motorcycles}</b><span>MOTOR IN</span></div></div><div class="insideExplanation"><b>Penjelasan:</b> ${todayStill} kendaraan berasal dari IN hari ini dan ${oldCount} kendaraan sudah berada di dalam dari tanggal sebelumnya. Jadi total yang masih berada di dalam sekarang adalah <b>${inside} kendaraan</b>.</div><div class="label" style="margin-top:14px">RIWAYAT KENDARAAN YANG MASIH DI DALAM</div><div class="hint">Daftar ini tidak dibatasi tahun. Kendaraan dari 2025 atau tahun sebelumnya tetap muncul selama belum tercatat OUT.</div><div class="insideHistoryList">${groupHtml}</div>`}if($('ccHourlyChart')){
+  try{
+    const rangeData=(GDR.from===GDR.to)?d:await (async()=>{const rr=await call({action:'report',from:GDR.from,to:GDR.to,type},90000);if(!rr.ok)throw Error(rr.message||'Grafik periode gagal dimuat.');return rr.data||{}})();
+    $('ccHourlyChart').innerHTML=renderRangeChart(rangeData.rows||[],GDR.from,GDR.to,{hourly:rangeData.hourly||d.hourly||[],dailyTrend:rangeData.dailyTrend||[],title:gdrReadoutText().replace('Periode aktif: ','')});
+  }catch(chartErr){
+    $('ccHourlyChart').innerHTML='<div class="empty">⚠ Grafik periode gagal dimuat: '+esc(chartErr.message||chartErr)+'</div>';
+  }
+}const gates=d.gates||[];$('gateStatus').className=gates.length?'tablewrap':'empty';$('gateStatus').innerHTML=gates.length?'<table class="table"><tr><th>Gate</th><th>Status</th><th>IN</th><th>OUT</th></tr>'+gates.map(g=>`<tr><td>${esc(g.gateName||g.gateId)}</td><td><span class="pill ${g.active?'pgreen':'pred'}">${g.active?'ACTIVE':'INACTIVE'}</span></td><td>${Number(g.todayIn||0)}</td><td>${Number(g.todayOut||0)}</td></tr>`).join('')+'</table>':'Tidak ada gate.';const la=d.lastAccess||[];$('lastAccess').className=la.length?'tablewrap':'empty';$('lastAccess').innerHTML=la.length?'<table class="table"><tr><th>Waktu</th><th>Nama</th><th>Kendaraan</th><th>Gate</th><th>Aksi</th></tr>'+la.map(x=>`<tr><td>${esc(x.time||x.timestamp||'')}</td><td>${esc(x.name||'')}</td><td>${esc(x.plate||x.vehicle||'')}</td><td>${esc(x.gateName||x.gateId||'')}</td><td>${esc(x.action||x.direction||x.type||'')}</td></tr>`).join('')+'</table>':'Belum ada akses.';}catch(e){toast('❌ Command Center: '+(e.message||e));console.error(e)}}
+let masterEditingPlate='';
+function setMasterEditMode(active,plate=''){masterEditingPlate=active?String(plate||'').trim():'';const box=$('masterEditMode'),p=$('mPlate'),b=$('saveMasterBtn');if(box)box.style.display=active?'block':'none';if(p)p.disabled=!!active;if(b)b.textContent=active?'💾 SIMPAN PERUBAHAN':'💾 SIMPAN / UPDATE'}
+function updateCustomAccessUI(){if($('mAccessType')&&$('mCustomAccessType'))$('mCustomAccessType').style.display=$('mAccessType').value==='CUSTOM'?'block':'none';if($('aType')&&$('aCustomType'))$('aCustomType').style.display=$('aType').value==='CUSTOM'?'block':'none'}
+function selectedMasterAccessType(){const v=$('mAccessType')?.value||'VISITOR';return v==='CUSTOM'?String($('mCustomAccessType')?.value||'').trim():v}
+function clearM(){['mName','mPlate','mDiv','mType','mModel','mColor','mCustomAccessType'].forEach(id=>$(id).value='');if($('mAccessType'))$('mAccessType').value='VISITOR';updateCustomAccessUI();setMasterEditMode(false)}
+async function saveM(){
+  const name=$('mName').value.trim(),plate=$('mPlate').value.trim();
+  if(!name||!plate)return setResult('manualResult','Nama dan Nomor Kendaraan wajib diisi.','err');
+  if(masterEditingPlate&&plate.toUpperCase()!==masterEditingPlate.toUpperCase())return setResult('manualResult','Nomor kendaraan dikunci saat mode edit. Gunakan BERSIHKAN untuk input kendaraan baru.','err');
+  const b=$('saveMasterBtn');b.disabled=true;
+  try{
+    const r=await call({action:'registerVehicle',name,plate,division:$('mDiv').value.trim(),vehicleType:$('mType').value.trim(),accessType:selectedMasterAccessType()||'VISITOR',model:$('mModel').value.trim(),color:$('mColor').value.trim(),pin:adminPin_()});
+    if(!r.ok)throw Error(r.message);
+    setResult('manualResult','✓ '+(r.data?.message||'Data MASTER berhasil disimpan.'),'ok');
+    clearM();
+    if(typeof syncMasterCache==='function' && online())await syncMasterCache();
+    await dash();
+    if($('masterSearch')?.value.trim())await masterSearch();
+  }catch(e){setResult('manualResult','❌ '+e.message,'err')}
+  finally{b.disabled=false}
+}
+async function masterSearch(){
+  const q=$('masterSearch').value.trim();
+  if(!q)return setResult('masterSearchResult','Masukkan nama, nomor kendaraan, atau divisi yang ingin dicari.','err');
+  const b=$('masterSearchBtn');b.disabled=true;
+  try{
+    let a=[];
+    if(online()){
+      const r=await call({action:'search',q});a=r.data?.found||[];
+    }else{
+      const r=await offlineMasterSearch(q);a=r.found||[];
+    }
+    const el=$('masterSearchResult');
+    if(!a.length){el.textContent='🚫 DATA MASTER TIDAK DITEMUKAN';el.className='result show err';return}
+    el.className='result show ok';
+    el.innerHTML='<div class="masterEditList">'+a.map((v,i)=>`<div class="masterEditItem"><div class="masterEditInfo"><b>${esc(v.plate||'—')}</b><strong>${esc(v.name||'Nama belum diisi')}</strong><small>${esc(v.division||'—')} • ${esc([v.type,v.model,v.color].filter(Boolean).join(' • ')||'Profil belum lengkap')} • ACCESS: ${esc(v.accessType||'VISITOR')}</small></div><button type="button" class="btn blue masterEditBtn" data-index="${i}">✏️ EDIT</button></div>`).join('')+'</div>';
+    el.querySelectorAll('.masterEditBtn').forEach(x=>x.addEventListener('click',()=>loadMasterForEdit(a[Number(x.dataset.index)])));
+  }catch(e){setResult('masterSearchResult','❌ '+e.message,'err')}
+  finally{b.disabled=false}
+}
+function loadMasterForEdit(v){
+  if(!v)return;
+  $('mName').value=v.name||'';$('mPlate').value=v.plate||'';$('mDiv').value=v.division||'';$('mType').value=v.type||v.vehicleType||'';
+  const av=accessTypeNorm(v.accessType||'VISITOR');$('mAccessType').value=TYPES.includes(av)?av:'CUSTOM';if($('mCustomAccessType'))$('mCustomAccessType').value=TYPES.includes(av)?'':av;updateCustomAccessUI();
+  $('mModel').value=v.model||'';$('mColor').value=v.color||'';setMasterEditMode(true,v.plate);
+  setResult('manualResult','✏️ Data '+(v.plate||'')+' dimuat ke form. Silakan edit lalu SIMPAN PERUBAHAN.','warn');
+  document.getElementById('master')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function clearMasterSearch(){if($('masterSearch'))$('masterSearch').value='';if($('masterSearchResult')){$('masterSearchResult').className='result';$('masterSearchResult').textContent=''}}
+function mapHead(row){const m={};Object.keys(row).forEach(k=>m[k.toLowerCase().replace(/[^a-z0-9]/g,'')]=row[k]);return m}
+function val(m,a){for(const n of a){const k=n.toLowerCase().replace(/[^a-z0-9]/g,'');if(m[k]!==undefined&&String(m[k]).trim()!=='')return m[k]}return ''}
+async function importM(){const f=$('fileInput').files[0];if(!f)return toast('Pilih Excel/CSV terlebih dahulu.');if(!window.XLSX)return toast('Library Excel belum siap. Refresh.');const b=$('importBtn');b.disabled=true;try{const pin=adminPin_();if(!pin)throw Error('PIN Admin wajib diisi.');const wb=XLSX.read(await f.arrayBuffer(),{type:'array'}),ws=wb.Sheets[wb.SheetNames[0]],raw=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false}),rows=raw.map(x=>{const m=mapHead(x);return{name:val(m,['nama','namapemilik','pemilik']),plate:val(m,['nomorkendaraan','nopolisi','nopol','nomorpolisi','plate','plat']),division:val(m,['bagian/divisi','bagian','divisi']),vehicleType:val(m,['jeniskendaraan','jeniskendaraan','jenis kendaraan','jenis','tipe']),accessType:val(m,['accesstype','access type','kategori akses','kategori']),model:val(m,['model']),color:val(m,['warnakendaraan','warna'])}}).filter(x=>x.plate);if(!rows.length)throw Error('Kolom Nomor Kendaraan tidak ditemukan.');let c=0,u=0;for(let i=0;i<rows.length;i+=25){const r=await call({action:'importVehicles',rows:JSON.stringify(rows.slice(i,i+25)),pin},30000);c+=r.data.created;u+=r.data.updated;b.textContent=`IMPORT ${Math.min(i+25,rows.length)}/${rows.length}`}$('importResult').textContent=`✓ ${c} baru • ${u} diperbarui`;$('importResult').className='result show ok';dash()}catch(e){$('importResult').textContent='❌ '+e.message;$('importResult').className='result show err'}finally{b.disabled=false;b.textContent='📥 IMPORT / UPDATE MASTER'}}
+function template(){if(!window.XLSX)return toast('Library Excel belum siap.');const ws=XLSX.utils.aoa_to_sheet([['Nama','Nomor Kendaraan','Bagian/Divisi','Jenis Kendaraan','Model','Warna Kendaraan','Access Type']]);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'VEHICLES');XLSX.writeFile(wb,'VACS_VEHICLES_TEMPLATE.xlsx');toast('Template Excel dibuat.')}
+async function current(){try{const r=await call({action:'current'}),a=r.data||[];try{localStorage.setItem('vacsServerInside',JSON.stringify(a.map(x=>({plate:x.plate,name:x.name||'',inTime:x.inTime||'',date:x.date||''}))))}catch(e){};$('currentList').className=a.length?'tablewrap':'empty';$('currentList').innerHTML=a.length?`<table class="table"><tr><th>Nama</th><th>Nomor Kendaraan</th><th>Divisi</th><th>Access Type</th><th>Jam IN</th><th>Tanggal</th><th>Keterangan</th></tr>${a.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.plate)}</td><td>${esc(x.division)}</td><td>${esc(x.accessType||x.type||'')}</td><td>${esc(fmtTime(x.inTime))}</td><td>${esc(x.date)}</td><td>${esc(x.notes||'')}</td></tr>`).join('')}</table>`:'Tidak ada kendaraan di dalam.'}catch(e){$('currentList').textContent='❌ '+e.message}}
+async function audit(){try{const r=await call({action:'audit',q:$('auditSearch').value}),a=r.data.events||[];$('auditList').className=a.length?'tablewrap':'empty';$('auditList').innerHTML=a.length?`<table class="table"><tr><th>Timestamp</th><th>Created By</th><th>Action</th><th>Nomor Kendaraan</th><th>Nama</th><th>Result</th><th>Detail</th></tr>${a.map(x=>`<tr><td>${esc(fmtTime(x.timestamp))}</td><td>${esc(x.createdBy)}</td><td>${esc(x.action)}</td><td>${esc(x.plate)}</td><td>${esc(x.name)}</td><td>${esc(x.result)}</td><td>${esc(x.detail)}</td></tr>`).join('')}</table>`:'Tidak ada audit event.'}catch(e){$('auditList').textContent='❌ '+e.message}}
+function adminPin_(){
+ const existing=String($('adminPin')?.value||'').trim();
+ if(existing)return existing;
+ const p=window.prompt('Masukkan PIN ADMIN VACS:','');
+ return String(p||'').trim();
+}
+function accessToken_(){
+ let t='';try{t=String(localStorage.getItem('vacsAccessToken')||'').trim()}catch(e){}
+ return t;
+}
+let __vacsTokenModalPromise=null;
+function ensureAccessToken_(){
+ const existing=accessToken_();
+ if(existing)return Promise.resolve(existing);
+ if(__vacsTokenModalPromise)return __vacsTokenModalPromise;
+ __vacsTokenModalPromise=new Promise(resolve=>{
+   const box=document.createElement('div');box.id='vacsTokenModal';
+   box.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
+   box.innerHTML=`<div style="width:100%;max-width:460px;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.35)"><div style="font-size:20px;font-weight:900;margin-bottom:8px">🔐 VACS AUTHENTICATION</div><div style="color:#64748b;font-size:14px;line-height:1.5;margin-bottom:14px">ACCESS TOKEN hanya diperlukan untuk transaksi yang mengubah data server. Token disimpan lokal di perangkat ini dan tidak diminta ulang selama masih tersimpan.</div><label style="display:block;font-weight:800;margin-bottom:7px">ACCESS TOKEN VACS</label><input id="vacsTokenInput" type="password" autocomplete="off" spellcheck="false" style="width:100%;box-sizing:border-box;padding:13px 14px;border:2px solid #cbd5e1;border-radius:12px;font-size:16px" placeholder="Masukkan token VACS"><div id="vacsTokenError" style="display:none;color:#b91c1c;font-weight:700;font-size:13px;margin-top:8px"></div><div style="display:flex;gap:10px;margin-top:16px"><button type="button" id="vacsTokenCancel" class="btn" style="flex:1">BATAL</button><button type="button" id="vacsTokenSave" class="btn green" style="flex:1">SIMPAN TOKEN</button></div></div>`;
+   document.body.appendChild(box);
+   const input=box.querySelector('#vacsTokenInput'),err=box.querySelector('#vacsTokenError');
+   const finish=v=>{try{box.remove()}catch(e){};__vacsTokenModalPromise=null;resolve(v||'')};
+   box.querySelector('#vacsTokenCancel').onclick=()=>finish('');
+   box.querySelector('#vacsTokenSave').onclick=()=>{const t=String(input.value||'').trim();if(!t){err.textContent='ACCESS TOKEN wajib diisi.';err.style.display='block';input.focus();return}try{localStorage.setItem('vacsAccessToken',t)}catch(e){}finish(t)};
+   input.addEventListener('keydown',e=>{if(e.key==='Enter')box.querySelector('#vacsTokenSave').click();if(e.key==='Escape')box.querySelector('#vacsTokenCancel').click()});
+   setTimeout(()=>input.focus(),50);
+ });
+ return __vacsTokenModalPromise;
+}
+async function backup(){const b=$('backupBtn');b.disabled=true;try{const r=await call({action:'backup',pin:adminPin_()},30000);if(!r.ok)throw Error(r.message);$('backupResult').textContent=`✓ Backup dibuat: ${r.data.name}`;$('backupResult').className='result show ok'}catch(e){$('backupResult').textContent='❌ '+e.message;$('backupResult').className='result show err'}finally{b.disabled=false}}
+function isoDateToLog(v){const s=String(v??'').trim();const m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?String(m[3]).padStart(2,'0')+'/'+String(m[2]).padStart(2,'0')+'/'+m[1]:s}
+function hariTanggal(v){const s=String(v??'').trim();let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);if(!m)return s;const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));const hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dt.getUTCDay()];return `${hari}, ${String(d).padStart(2,'0')} ${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][mo-1]} ${y}`}
+function fileDateName(v){const s=String(v??'').trim();let d,mo,y;let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);if(m){d=Number(m[1]);mo=Number(m[2]);y=Number(m[3])}else{m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(m){y=Number(m[1]);mo=Number(m[2]);d=Number(m[3])}else{const dt=new Date();y=dt.getFullYear();mo=dt.getMonth()+1;d=dt.getDate()}}const dt=new Date(Date.UTC(y,mo-1,d));const hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dt.getUTCDay()];return `${hari},_${String(d).padStart(2,'0')}_${String(mo).padStart(2,'0')}_${y}`}
+function renderDailyLineage_(lineage){
+  const days=Array.isArray(lineage)?lineage:[];
+  if(!days.length)return '<div class="card" style="margin-top:10px"><div class="label">📚 JEJAK HARIAN / ASAL STILL INSIDE</div><div class="empty">Tidak ada snapshot harian.</div></div>';
+  const originRows=(g)=>Array.isArray(g.rows)?g.rows.map(x=>`<div class="insideVehicle"><b>${esc(x.plate||'—')}</b><span>${esc(x.name||'Nama belum diisi')} • ${esc(x.vehicleType||'Kendaraan')}</span><small>IN asli: ${esc(hariTanggal(x.inDate||''))} ${esc(x.inTime||'')}</small></div>`).join(''):'';
+  return `<div class="card" style="margin-top:10px"><div class="label">📚 JEJAK HARIAN • CARRY FORWARD & ASAL KENDARAAN</div><div class="hint">Setiap tanggal dihitung sebagai snapshot. Kendaraan yang belum OUT dibawa ke hari berikutnya tanpa menjadi IN baru. Karena itu jumlah STILL INSIDE dapat berasal dari beberapa tanggal sekaligus.</div>${days.map(d=>{
+    const origins=d.stillInsideByOrigin||[];
+    const carry=d.carryoverByOrigin||[];
+    return `<details class="insideHistory" ${d.date===days[days.length-1].date?'open':''} style="margin-top:10px"><summary><span><b>${esc(hariTanggal(d.date))}</b><small>${esc(d.date)}</small></span><strong>${Number(d.stillInside||0)} STILL INSIDE</strong></summary><div style="padding:10px 0"><div class="cc"><div class="stat"><b>${Number(d.openingInside||0)}</b><span>OPENING / CARRY</span></div><div class="stat"><b>${Number(d.newIn||0)}</b><span>NEW IN</span></div><div class="stat"><b>${Number(d.out||0)}</b><span>OUT</span></div><div class="stat"><b>${Number(d.stillInside||0)}</b><span>STILL INSIDE</span></div></div><div class="insideExplanation"><b>Penjelasan tanggal ${esc(d.date)}:</b> ${Number(d.openingInside||0)} kendaraan dibawa dari hari sebelumnya + ${Number(d.newIn||0)} kendaraan baru masuk − ${Number(d.out||0)} kendaraan OUT = <b>${Number(d.stillInside||0)} kendaraan masih di dalam.</b></div><div class="label" style="margin-top:12px">ASAL KENDARAAN YANG MASIH DI DALAM</div>${origins.length?origins.map(g=>`<details class="insideHistory" style="margin-top:7px"><summary><span><b>${esc(hariTanggal(isoDateToLog(g.date)||g.date))}</b><small>IN asli: ${esc(g.date)}</small></span><strong>${Number(g.count||0)} kendaraan</strong></summary><div class="insideHistoryRows">${originRows(g)||'<div class="hint">Tidak ada detail.</div>'}</div></details>`).join(''):'<div class="hint">Tidak ada kendaraan yang masih di dalam.</div>'}<div class="label" style="margin-top:12px">RINGKASAN CARRY FORWARD SAAT AWAL HARI</div>${carry.length?carry.map(g=>`<div style="padding:7px 0;border-bottom:1px solid var(--line)"><b>${Number(g.count||0)}</b> kendaraan dari <b>${esc(isoDateToLog(g.date)||g.date)}</b></div>`).join(''):'<div class="hint">Tidak ada carry-forward dari hari sebelumnya.</div>'}</div></details>`;
+  }).join('')}</div>`;
+}
+
+async function report(){try{const type=$('rType').value;const period=$('rPeriodType')?.value||'daily';if(period==='weekly')gdrSetPreset('week');else if(period==='monthly')gdrSetPreset('month');gdrEnsureValid();const merged=await gdrFetchRangeReport(type);lastReport=merged;const s=merged.summary||{};$('reportSummary').innerHTML=`<div class="stat"><b>${s.totalIn||0}</b><span>IN PERIODE</span></div><div class="stat"><b>${s.totalOut||0}</b><span>OUT PERIODE</span></div><div class="stat"><b>${s.totalInside||0}</b><span>STILL INSIDE</span></div><div class="stat"><b>${s.carryoverInside||0}</b><span>DARI SEBELUMNYA</span></div><div class="stat"><b>${s.cars||0}</b><span>MOBIL IN</span></div><div class="stat"><b>${s.motorcycles||0}</b><span>MOTOR IN</span></div>`;const rows=merged.rows||[];$('reportTable').className='tablewrap';$('reportTable').innerHTML=`<table class="table"><tr><th>Nama</th><th>Nomor Kendaraan</th><th>Bagian/Divisi</th><th>Jenis Kendaraan</th><th>Access Type</th><th>Model</th><th>Warna</th><th>Jam IN</th><th>Hari/Tanggal IN</th><th>Jam OUT</th><th>Hari/Tanggal OUT</th><th>Status</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.plate)}</td><td>${esc(x.division)}</td><td>${esc(x.vehicleType||'')}</td><td>${esc(x.accessType||x.type||'')}</td><td>${esc(x.model)}</td><td>${esc(x.color)}</td><td>${esc(fmtTime(x.inTime))}</td><td>${esc(hariTanggal(x.inDate||x.date))}</td><td>${esc(fmtTime(x.outTime))}</td><td>${x.outDate?esc(hariTanggal(x.outDate)):'—'}</td><td>${esc(x.status||'')}</td><td>${esc(x.notes)}</td></tr>`).join('')||'<tr><td colspan="13">Tidak ada data pada periode tersebut.</td></tr>'}</table><div class="card" style="margin-top:10px"><div class="label">KENDARAAN DARI HARI SEBELUMNYA YANG MASIH DI DALAM</div><div class="tablewrap"><table class="table"><tr><th>Kendaraan</th><th>Jenis</th><th>Masuk</th></tr>${(merged.carryoverRows||[]).map(x=>`<tr><td>${esc(x.plate||'')}</td><td>${esc(x.vehicleType||'')}</td><td>${esc(x.inDate||'')} ${esc(x.inTime||'')}</td></tr>`).join('')||'<tr><td colspan="3">Tidak ada kendaraan dari hari sebelumnya yang masih di dalam.</td></tr>'}</table></div><div class="hint" style="margin-top:8px;font-weight:900">STILL INSIDE = IN periode + kendaraan dari hari sebelumnya yang belum OUT.</div></div>${renderDailyLineage_(merged.lineage)}<div class="card" id="reportChartCard" style="margin-top:10px"><div class="label">GRAFIK MASUK / KELUAR • MENYESUAIKAN PERIODE</div><div id="reportChart">${renderRangeChart(rows,GDR.from,GDR.to,{hourly:merged.hourly||[],dailyTrend:merged.dailyTrend||[],title:gdrReadoutText().replace('Periode aktif: ','')+' • TYPE '+(type||'ALL')})}</div></div>`}catch(e){$('reportTable').className='empty';$('reportTable').textContent='❌ '+e.message}}
+
+function downloadBlob(blob,name,mime){
+  mime=mime||blob.type||'application/octet-stream';
+  const native=window.Android;
+  if(native&&typeof native.saveFileBase64==='function'){
+    const fr=new FileReader();
+    fr.onload=()=>{try{native.saveFileBase64(name,String(fr.result).split(',')[1],mime);toast('✅ File dikirim ke penyimpanan perangkat.')}catch(e){toast('❌ Penyimpanan Android gagal: '+(e.message||e))}};
+    fr.readAsDataURL(blob); return;
+  }
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=name;a.rel='noopener';a.style.display='none';
+  document.body.appendChild(a);
+  try{a.click();}catch(e){toast('❌ Browser/WebView memblokir download: '+(e.message||e));}
+  setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},3000);
+}
+
+async function saveMaster(){return saveM()}
+let selectedVehicles=[];
+function updateGateButtons(){const n=selectedVehicles.length;$('inBtn').disabled=$('outBtn').disabled=!n;$('inBtn').textContent=n?`✓ VEHICLE IN (${n})`:'✓ VEHICLE IN';$('outBtn').textContent=n?`↗ VEHICLE OUT (${n})`:'↗ VEHICLE OUT'}
+function showVehicle(v){selected=v;$('profile').classList.toggle('show',!!v);if(v){$('plate').textContent=v.plate;$('owner').textContent=v.name||'Nama belum diisi';$('meta').textContent=v.division||'Bagian/Divisi belum diisi';$('vehicle').textContent=[v.type,v.model,v.color].filter(Boolean).join(' • ')||'Profil belum lengkap'}updateGateButtons()}
+function renderVehicleResults(items,queries){const el=$('result');if(!items.length){showVehicle(null);el.innerHTML='🚫 KENDARAAN TIDAK TERDAFTAR';el.className='result show err';return}selectedVehicles=items.slice();selected=selectedVehicles[0]||null;showVehicle(selected);el.className='result show ok';el.innerHTML=`<div class="multiSearchHead"><b>✓ ${items.length} KENDARAAN DITEMUKAN</b><span>${queries.length} pencarian</span></div><div class="multiSearchTools"><button type="button" class="btn blue" id="selectAllVehicles">☑ SELECT ALL</button><button type="button" class="btn" id="clearVehicles">CLEAR</button></div><div class="multiVehicleList">${items.map((v,i)=>`<label class="multiVehicleItem"><input type="checkbox" class="vehicleCheck" data-index="${i}" checked><span><b>${i+1}. ${esc(v.plate||'—')}</b><small>${esc(v.name||'Nama belum diisi')} • ${esc([v.type,v.model,v.color].filter(Boolean).join(' • ')||'Profil belum lengkap')}</small></span></label>`).join('')}</div>`;
+el.querySelector('#selectAllVehicles')?.addEventListener('click',()=>{el.querySelectorAll('.vehicleCheck').forEach(c=>c.checked=true);syncVehicleSelection(items)});
+el.querySelector('#clearVehicles')?.addEventListener('click',()=>{el.querySelectorAll('.vehicleCheck').forEach(c=>c.checked=false);syncVehicleSelection(items)});
+el.querySelectorAll('.vehicleCheck').forEach(c=>c.addEventListener('change',()=>syncVehicleSelection(items)))}
+function syncVehicleSelection(items){selectedVehicles=[...$('result').querySelectorAll('.vehicleCheck')].filter(c=>c.checked).map(c=>items[Number(c.dataset.index)]).filter(Boolean);selected=selectedVehicles[0]||null;showVehicle(selected);$('result').classList.add('show');const checked=selectedVehicles.length;$('inBtn').textContent=checked?`✓ VEHICLE IN (${checked})`:'✓ VEHICLE IN';$('outBtn').textContent=checked?`↗ VEHICLE OUT (${checked})`:'↗ VEHICLE OUT';}
+let searchDebounceT=null,searchReqSeq=0;
+function splitVehicleQueries(raw){return String(raw||'').split(/[\n,;]+/).map(x=>x.trim()).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.toUpperCase()===x.toUpperCase())===i)}
+function searchVehicle(){clearTimeout(searchDebounceT);searchDebounceT=setTimeout(searchVehicleNow,120)}
+async function searchVehicleNow(){const queries=splitVehicleQueries($('search').value);const mySeq=++searchReqSeq;if(!queries.length){selectedVehicles=[];showVehicle(null);$('result').className='result';$('result').textContent='';return}const local=async()=>{const all=[];const seen=new Set();for(const q of queries){const d=await offlineMasterSearch(q);for(const v of(d.found||[])){const k=String(v.plate||'').trim().toUpperCase();if(k&&!seen.has(k)){seen.add(k);all.push(v)}}}if(mySeq===searchReqSeq)renderVehicleResults(all,queries);return all};try{const localItems=await local();if(localItems.length)return}catch(_){}try{const results=await Promise.all(queries.map(async q=>{const d=await call({action:'search',q},15000);if(d&&d.ok===false)throw Error(d.message||'Pencarian gagal');return{q,found:d.data?.found||[]}}));if(mySeq!==searchReqSeq)return;const items=[],seen=new Set();results.forEach(r=>r.found.forEach(v=>{const k=String(v.plate||'').trim().toUpperCase();if(k&&!seen.has(k)){seen.add(k);items.push(v)}}));if(items.length){online(true);renderVehicleResults(items,queries);return}}catch(e){}try{const localItems=await local();if(localItems.length)return}catch(_){}setResult('result','⚠️ SERVER BELUM TERJANGKAU. VACS akan mencoba jalur koneksi alternatif otomatis. Jika server belum dapat dijangkau, MASTER lokal tetap digunakan bila tersedia.','warn')}
+async function gateAccess(act){
+  const list=selectedVehicles.slice();if(!list.length)return;
+  const token=await ensureAccessToken_();
+  if(!token){setResult('result','Transaksi dibatalkan — ACCESS TOKEN belum diisi.','warn');return;}
+  const b1=$('inBtn'),b2=$('outBtn');b1.disabled=b2.disabled=true;
+  const gateLabel=($('gateSelect').selectedOptions[0]?.textContent)||'GATE';
+  const results=[];
+  try{
+    const pending=await queueAll().catch(()=>[]);
+    const base=JSON.parse(localStorage.getItem('vacsServerInside')||'[]');
+    const state={};(base||[]).forEach(x=>state[String(x.plate||'').toUpperCase()]=true);
+    pending.slice().sort((a,b)=>String(a.localTimestamp||'').localeCompare(String(b.localTimestamp||''))||Number(a.queuedAt||0)-Number(b.queuedAt||0)).forEach(x=>{const p=x.payload||{};const k=String(p.plate||'').toUpperCase();if(k&&p.activity)state[k]=String(p.activity).toUpperCase()==='IN'});
+    for(let i=0;i<list.length;i++){
+      const v=list[i];setResult('result',`⏳ ${act} ${i+1}/${list.length} • ${v.plate}`,'warn');
+      const stateKey=String(v.plate||'').toUpperCase();if((act==='IN'&&state[stateKey]===true)||(act==='OUT'&&state[stateKey]===false)){results.push({plate:v.plate,eventId:'',status:'REJECTED',message:act==='IN'?'DITAHAN LOKAL — kendaraan masih tercatat DI DALAM.':'DITAHAN LOKAL — tidak ada IN aktif.'});continue;}
+      state[stateKey]=(act==='IN');
+      const payload={action:'access',plate:v.plate,activity:act,gateId:$('gateSelect').value,device:$('deviceId').value.trim()||device(),notes:$('gateNotes')?.value||'',localTimestamp:new Date().toISOString(),eventId:makeEventId(),accessToken:token};
+      try{await queueAdd({eventId:payload.eventId,kind:'gate',localTimestamp:payload.localTimestamp,payload});results.push({plate:v.plate,eventId:payload.eventId,status:'QUEUED',message:`${act} TERSIMPAN \u2022 MENUNGGU SYNC`})}
+      catch(e){results.push({plate:v.plate,eventId:payload.eventId,status:'ERROR',message:'Gagal menyimpan transaksi lokal: '+(e.message||e)})}
+    }
+    setResult('result',`\u23f3 Mengirim ${results.length} transaksi ke server...`,'warn');
+    let syncResults=null;
+    try{syncResults=await syncQueue()}catch(e){}
+    if(syncResults&&syncResults.length){
+      const byId={};syncResults.forEach(r=>byId[r.eventId]=r);
+      results.forEach(r=>{
+        const sr=byId[r.eventId];if(!sr)return;
+        if(sr.status==='SYNCED'){r.status='SYNCED';r.message=`${act} BERHASIL DISIMPAN KE SERVER`}
+        else if(sr.status==='FAILED'){
+          if(sr.cleared){r.status='REJECTED';r.message='DITOLAK SERVER • TIDAK MASUK LOG: '+(sr.message||'')}
+          else{r.status='QUEUED';r.message=`${act} TERSIMPAN \u2022 AKAN DICOBA LAGI OTOMATIS`}
+        }
+      });
+    }else{
+      results.forEach(r=>{if(r.status==='QUEUED')r.message=`${act} TERSIMPAN OFFLINE \u2022 AKAN SYNC OTOMATIS SAAT ONLINE`});
+    }
+    const okCount=results.filter(x=>x.status==='SYNCED').length;
+    const queuedCount=results.filter(x=>x.status==='QUEUED').length;
+    const badCount=results.filter(x=>x.status==='ERROR'||x.status==='REJECTED').length;
+    const icon=r=>r.status==='SYNCED'?'\u2713':r.status==='QUEUED'?'\u23f3':'\ud83d\udeab';
+    const cls=r=>r.status==='SYNCED'?'ok':r.status==='QUEUED'?'warn':'err';
+    const summary=results.map(r=>`<div class="batchResult ${cls(r)}"><b>${icon(r)} ${esc(r.plate)}</b><span>${esc(r.message)}</span></div>`).join('');
+    $('result').innerHTML=`<div class="multiSearchHead"><b>${act} SELESAI \u2022 ${okCount} BERHASIL${queuedCount?`, ${queuedCount} TERSIMPAN (BELUM SYNC)`:''}${badCount?`, ${badCount} DITOLAK`:''}</b><span>${gateLabel}</span></div><div class="batchResults">${summary}</div>`;
+    $('result').className='result show '+(badCount?'warn':queuedCount?'warn':'ok');
+  }catch(e){setResult('result','\ud83d\udeab '+(e.message||e),'err')}
+  finally{b1.disabled=b2.disabled=false;updateGateButtons()}
+}
+function populateGates(gs){const opts=(gs||[]).filter(g=>g.active!==false);['gateSelect','aGate','xGate'].forEach(id=>{const s=$(id);s.innerHTML='<option value="ALL">ALL / DEFAULT</option>'+opts.map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('')})}
+async function loadGates(){try{const d=await call({action:'gates'});populateGates(d.data?.gates||[])}catch(e){populateGates([])}}
+function mergeAccessTypeOptions(values){
+  const extras=[...new Set((values||[]).map(accessTypeNorm).filter(Boolean))];
+  const all=[...TYPES,...extras.filter(v=>!TYPES.includes(v)&&v!=='CUSTOM')];
+  [['dashType','ALL'],['rType','ALL'],['ccType','ALL']].forEach(([id,allValue])=>{const el=$(id);if(!el)return;const old=el.value||allValue;el.innerHTML=`<option value="${allValue}">${id==='ccType'?'ALL ACCESS TYPE':'ALL'}</option>`+all.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')+'<option value="CUSTOM">CUSTOM</option>';if([...el.options].some(o=>o.value===old))el.value=old;});
+}
+function initTypes(){const opts=TYPES.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')+'<option value="CUSTOM">CUSTOM</option>';if($('aType'))$('aType').innerHTML=opts;if($('mAccessType'))$('mAccessType').innerHTML=opts;mergeAccessTypeOptions([]);updateCustomAccessUI()}
+function authValid(a){const now=new Date(),day=now.toLocaleDateString('en-CA',{timeZone:'Asia/Jakarta'}),t=now.toLocaleTimeString('en-GB',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false});return a.status==='ACTIVE'&&(!a.validFromDate||day>=String(a.validFromDate).slice(0,10))&&(!a.validUntilDate||day<=String(a.validUntilDate).slice(0,10))&&(!a.timeFrom||!a.timeUntil||((a.timeFrom<=a.timeUntil)?t>=a.timeFrom&&t<=a.timeUntil:(t>=a.timeFrom||t<=a.timeUntil)))}
+async function refreshAuth(){try{const d=await call({action:'authorizations'});authCache=d.data?.found||[];localStorage.setItem('vacsAuthCache',JSON.stringify(authCache));renderAuth();setResult('authResult',`✓ ${authCache.length} authorization tersedia; cache offline diperbarui.`)}catch(e){authCache=JSON.parse(localStorage.getItem('vacsAuthCache')||'[]');renderAuth();setResult('authResult','OFFLINE — memakai cache authorization lokal.','warn')}}
+function renderAuth(){const a=authCache;$('authTable').className=a.length?'tablewrap':'empty';$('authTable').innerHTML=a.length?'<table class="table"><tr><th>Auth ID</th><th>Person</th><th>Type</th><th>Company</th><th>Plate</th><th>Purpose</th><th>Host</th><th>Gate</th><th>Validity</th><th>Status</th></tr>'+a.map(x=>`<tr><td>${esc(x.authId)}</td><td>${esc(x.personName)}</td><td>${esc(accessTypeNorm(x.type))}</td><td>${esc(x.company)}</td><td>${esc(x.plate)}</td><td>${esc(x.purpose)}</td><td>${esc(x.host)}</td><td>${esc(x.gateAllowed)}</td><td>${esc(x.validFromDate)} → ${esc(x.validUntilDate)} ${esc(x.timeFrom)}-${esc(x.timeUntil)}</td><td>${esc(x.status)}</td></tr>`).join('')+'</table>':'Tidak ada authorization.'}
+async function createAuth(){try{const type=$('aType').value==='CUSTOM'?String($('aCustomType')?.value||'').trim():$('aType').value;if(!type)throw Error('Custom Access Type wajib diisi.');const d=await call({action:'createAuthorization',pin:adminPin_(),personName:$('aPerson').value,type,company:$('aCompany').value,plate:$('aPlate').value,purpose:$('aPurpose').value,host:$('aHost').value,gateAllowed:$('aGate').value,validFromDate:$('aFrom').value,validUntilDate:$('aUntil').value,timeFrom:$('aTimeFrom').value,timeUntil:$('aTimeUntil').value});setResult('authResult','✓ '+d.data.message);await refreshAuth()}catch(e){setResult('authResult','❌ '+e.message,'err')}}
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(IDB.name,4);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(IDB.queue))db.createObjectStore(IDB.queue,{keyPath:'eventId'});if(!db.objectStoreNames.contains(IDB.master))db.createObjectStore(IDB.master,{keyPath:'plate'});if(!db.objectStoreNames.contains(IDB.meta))db.createObjectStore(IDB.meta,{keyPath:'key'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function queueAdd(x){x={...x,queuedAt:Number(x.queuedAt||Date.now())};const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(IDB.queue,'readwrite');tx.objectStore(IDB.queue).put(x);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+async function queueAll(){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(IDB.queue,'readonly'),r=tx.objectStore(IDB.queue).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+async function queueClear(ids){if(!ids.length)return;const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(IDB.queue,'readwrite'),st=tx.objectStore(IDB.queue);ids.forEach(id=>st.delete(id));tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+function normMaster(v){return{name:String(v.name??'').trim().toUpperCase(),plate:String(v.plate??'').trim().toUpperCase(),division:String(v.division??'').trim().toUpperCase(),type:String(v.type??'').trim().toUpperCase(),model:String(v.model??'').trim().toUpperCase(),color:String(v.color??'').trim().toUpperCase(),accessType:accessTypeNorm(v.accessType)}}
+async function masterPutAll(items,metaInfo={}){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction([IDB.master,IDB.meta],'readwrite'),st=tx.objectStore(IDB.master),meta=tx.objectStore(IDB.meta);st.clear();for(const x of items||[]){const v=normMaster(x);if(v.plate)st.put(v)}if(metaInfo.revision)meta.put({key:'masterRevision',value:String(metaInfo.revision)});if(metaInfo.count!=null)meta.put({key:'masterCount',value:Number(metaInfo.count)});meta.put({key:'updatedAt',value:new Date().toISOString()});tx.oncomplete=res;tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)})}
+async function masterAll(){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(IDB.master,'readonly'),r=tx.objectStore(IDB.master).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+async function offlineMasterSearch(q){const a=await masterAll(),n=String(q||'').toUpperCase().replace(/[^A-Z0-9]/g,'');const qs=String(q||'').toUpperCase();const found=a.filter(v=>String(v.plate).toUpperCase().replace(/[^A-Z0-9]/g,'').includes(n)||String(v.name).toUpperCase().includes(qs)||String(v.division||'').toUpperCase().includes(qs)).slice(0,50);return{found}}
+async function masterCount(){try{return(await masterAll()).length}catch(e){return 0}}
+function setMasterStatus(t,cls){const el=$('masterCacheStatus');if(!el)return;el.textContent=t;el.style.color=cls==='ok'?'#15803d':cls==='warn'?'#c56a08':'#dc2626'}
+async function syncMasterCache(){
+  setConnectionState_('SYNCING','MASTER sedang diverifikasi dan dimuat dari Spreadsheet.');
+  let d;
+  try{
+    d=await call({action:'masterVehicles'},30000);
+    if(d&&d.ok===false)throw Error(d.message||'MASTER endpoint belum tersedia');
+  }catch(e){
+    const n=await masterCount();
+    setMasterStatus(n?`• OFFLINE READY • LOCAL MASTER ${n} (cached)`:'• OFFLINE — NO MASTER','warn');
+    return n;
+  }
+  const data=d?.data||{};
+  const vehicles=Array.isArray(data.vehicles)?data.vehicles:[];
+  const revision=String(data.revision||'').trim();
+  const count=Number(data.count??vehicles.length);
+  if(!vehicles.length||!revision||vehicles.length!==count){
+    const n=await masterCount();
+    setMasterStatus(n?`• STALE — snapshot server invalid • LOCAL MASTER ${n} (cached)`:'• STALE — MASTER kosong dari server','warn');
+    return n;
+  }
+  const db=await openDB();
+  const localRev=await new Promise(res=>{
+    const tx=db.transaction(IDB.meta,'readonly');
+    const r=tx.objectStore(IDB.meta).get('masterRevision');
+    r.onsuccess=()=>res(String(r.result?.value||''));
+    r.onerror=()=>res('');
+  });
+  const items=vehicles.map(x=>({...x,accessType:accessTypeNorm(x.accessType)}));
+  if(localRev===revision){
+    mergeAccessTypeOptions(items.map(x=>x.accessType));
+    online(true);
+    setMasterStatus(`• LIVE • MASTER ${count} (rev ${revision.slice(0,10)})`,'ok');
+    return count;
+  }
+  await new Promise((res,rej)=>{
+    const tx=db.transaction([IDB.master,IDB.meta],'readwrite');
+    const st=tx.objectStore(IDB.master),meta=tx.objectStore(IDB.meta);
+    st.clear();
+    for(const x of items){const v=normMaster(x);if(v.plate)st.put(v)}
+    meta.put({key:'masterRevision',value:revision});
+    meta.put({key:'masterCount',value:count});
+    meta.put({key:'updatedAt',value:new Date().toISOString()});
+    tx.oncomplete=res;
+    tx.onerror=()=>rej(tx.error);
+    tx.onabort=()=>rej(tx.error||new Error('MASTER transaction aborted'));
+  });
+  mergeAccessTypeOptions(items.map(x=>x.accessType));
+  online(true);
+  setMasterStatus(`• LIVE • MASTER ${count} (rev ${revision.slice(0,10)}) SYNCED`,'ok');
+  return count;
+}
+async function offlineAuth(act){const person=$('xPerson').value.trim(),plate=$('xPlate').value.trim(),gate=$('xGate').value;if(!person&&!plate)return setResult('offlineInfo','Person atau plate wajib.','err');const a=authCache.find(x=>(plate&&String(x.plate).replace(/\W/g,'').toUpperCase()===plate.replace(/\W/g,'').toUpperCase())||(person&&String(x.personName).toUpperCase()===person.toUpperCase()));if(!a||!authValid(a))return setResult('offlineInfo','🚫 OFFLINE DENIED — authorization tidak valid / expired / di luar jadwal.','err');if(a.gateAllowed&&a.gateAllowed!=='ALL'&&!String(a.gateAllowed).split(/[,|;]/).map(x=>x.trim().toUpperCase()).includes(gate.toUpperCase()))return setResult('offlineInfo','🚫 OFFLINE DENIED — gate tidak diizinkan.','err');const token=await ensureAccessToken_();if(!token)return setResult('offlineInfo','Transaksi dibatalkan — ACCESS TOKEN belum diisi.','warn');const eventId=makeEventId(),item={eventId,kind:'auth',localTimestamp:new Date().toISOString(),payload:{personName:a.personName,plate:a.plate,type:a.type,company:a.company,purpose:a.purpose,host:a.host,gateId:gate,activity:act,device:$('xDevice').value||device(),accessToken:token}};await queueAdd(item);setResult('offlineInfo',`✓ ${act} QUEUED OFFLINE • ${eventId}`,'ok');try{await syncQueue()}catch(e){}}
+function showConflict(item,msg){const plate=item?.payload?.plate||'kendaraan';const box=document.createElement('div');box.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';box.innerHTML=`<div style="max-width:520px;width:100%;background:#fff;border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><h2 style="margin:0 0 12px;color:#b91c1c">⚠️ TRANSAKSI TIDAK DIBUAT</h2><p style="font-weight:700;font-size:18px">Kendaraan ${esc(plate)} tidak diproses dari transaksi offline ini.</p><p>Server menolak transaksi karena kendaraan sudah memiliki transaksi yang lebih dahulu / status akses tidak memungkinkan.</p><p style="color:#64748b;font-size:13px">Detail server: ${esc(msg||'Transaksi ditolak')}</p><button class="btn blue" style="width:100%" onclick="this.closest('div[style*=fixed]').remove()">OK</button></div>`;document.body.appendChild(box)}
+let __vacsSyncInFlight=null;
+async function syncQueue(){
+ if(__vacsSyncInFlight)return __vacsSyncInFlight;
+ __vacsSyncInFlight=(async()=>{
+  const items=(await queueAll()).slice().sort((a,b)=>String(a.localTimestamp||'').localeCompare(String(b.localTimestamp||''))||Number(a.queuedAt||0)-Number(b.queuedAt||0)||String(a.eventId||'').localeCompare(String(b.eventId||'')));
+  if(!items.length)return[];
+  const BATCH_SIZE=5,allResults=[];let transportFailed=false;
+  function applyBatchResults(batch,rs){
+   const returned=new Set(rs.map(r=>String(r.eventId||''))),clear=[];
+   rs.forEach(r=>{
+    if(r.status==='SYNCED'){clear.push(r.eventId);r.cleared=true}
+    else if(r.status==='DENIED'){clear.push(r.eventId);r.cleared=true;const item=batch.find(x=>x.eventId===r.eventId);if(item)showConflict(item,String(r.message||'DITOLAK SERVER'))}
+    else if(r.status==='CONFLICT'){clear.push(r.eventId);r.cleared=true;const item=batch.find(x=>x.eventId===r.eventId);if(item)showConflict(item,String(r.message||'EVENT CONFLICT'))}
+    else if(r.status==='FAILED')r.cleared=!!r.cleared;
+   });
+   batch.forEach(item=>{if(!returned.has(String(item.eventId)))allResults.push({eventId:item.eventId,status:'FAILED',message:'Server tidak mengembalikan hasil transaksi ini.',cleared:false})});
+   allResults.push(...rs);return queueClear(clear);
+  }
+  const token=accessToken_();if(!token)return [];
+  for(let i=0;i<items.length;i+=BATCH_SIZE){
+   const batch=items.slice(i,i+BATCH_SIZE);
+   try{
+    const d=await call({action:'syncQueue',events:JSON.stringify(batch),accessToken:token},10000);
+    if(d&&d.ok===false)throw Error(d.message||'Sync ditolak server');
+    await applyBatchResults(batch,Array.isArray(d.data?.results)?d.data.results:[]);
+   }catch(e){
+    // Unknown commit state: verify repeatedly, never blind retry the mutation.
+    let verified=false;
+    for(let attempt=0;attempt<3&&!verified;attempt++){
+     try{
+      if(attempt)await sleep_(700);
+      const vr=await call({action:'verifyEvents',eventIds:JSON.stringify(batch.map(x=>x.eventId))},10000);
+      if(vr&&vr.ok===true&&Array.isArray(vr.data?.results)){
+       const rr=vr.data.results;
+       const unresolved=rr.filter(r=>r.status==='UNKNOWN');
+       if(!unresolved.length){await applyBatchResults(batch,rr);verified=true;break;}
+      }
+     }catch(verifyErr){console.debug('[VACS] verifyEvents failed',verifyErr)}
+    }
+    if(!verified){transportFailed=true;online(false);break;}
+   }
+  }
+  const synced=allResults.filter(x=>x.status==='SYNCED').length,failed=allResults.filter(x=>x.status==='FAILED').length,denied=allResults.filter(x=>x.status==='DENIED'||x.status==='CONFLICT').length,remaining=(await queueAll()).length;
+  setResult('offlineInfo',transportFailed?`⚠ SYNC BERHENTI • ${synced} synced • ${denied} ditolak/conflict • ${remaining} masih di queue.`:`✓ SYNC SELESAI • ${synced} synced • ${denied} ditolak/conflict • ${failed} gagal/unknown • ${remaining} masih di queue.`,remaining?'warn':'ok');
+  return allResults;
+ })();
+ try{return await __vacsSyncInFlight}finally{__vacsSyncInFlight=null}
+}
+function renderCurrent(a){$('currentList').className=a.length?'tablewrap':'empty';$('currentList').innerHTML=a.length?'<table class="table"><tr><th>Nama</th><th>Plate</th><th>Divisi</th><th>IN</th><th>Tanggal</th><th>Keterangan</th></tr>'+a.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.plate)}</td><td>${esc(x.division)}</td><td>${esc(fmtTime(x.inTime))}</td><td>${esc(x.date)}</td><td>${esc(x.notes||'')}</td></tr>`).join('')+'</table>':'Tidak ada kendaraan di dalam.'}
+async function exceptions(){try{const d=await call({action:'exceptions',q:$('exceptionSearch').value});const a=d.data?.events||[];$('exceptionList').className=a.length?'tablewrap':'empty';$('exceptionList').innerHTML=a.length?'<table class="table"><tr><th>Timestamp</th><th>Event</th><th>Person</th><th>Plate</th><th>Type</th><th>Gate</th><th>Reason</th><th>Device</th></tr>'+a.map(x=>`<tr><td>${esc(fmtTime(x.timestamp))}</td><td>${esc(x.eventId)}</td><td>${esc(x.personName)}</td><td>${esc(x.plate)}</td><td>${esc(x.type)}</td><td>${esc(x.gateName)}</td><td><span class="pill pred">${esc(x.reason)}</span></td><td>${esc(x.device)}</td></tr>`).join('')+'</table>':'Tidak ada denied event.'}catch(e){toast(e.message)}}
+async function alerts(){try{const d=await call({action:'alerts'}),a=d.data?.alerts||[];$('alertList').className=a.length?'tablewrap':'empty';$('alertList').innerHTML=a.length?'<table class="table"><tr><th>Alert</th><th>Type</th><th>Severity</th><th>Time</th><th>Person</th><th>Plate</th><th>Status</th><th>Action</th></tr>'+a.map(x=>`<tr><td>${esc(x.alertId)}</td><td>${esc(x.type)}</td><td>${esc(x.severity)}</td><td>${esc(fmtTime(x.timestamp))}</td><td>${esc(x.person)}</td><td>${esc(x.plate)}</td><td>${esc(x.status)}</td><td><button class="btn" onclick="ack('${esc(x.alertId)}')">ACK</button> <button class="btn" onclick="resolveA('${esc(x.alertId)}')">RESOLVE</button></td></tr>`).join('')+'</table>':'Tidak ada alert.'}catch(e){toast(e.message)}}
+async function ack(id){try{await call({action:'ackAlert',alertId:id,pin:adminPin_()});alerts();commandCenter()}catch(e){toast(e.message)}}
+async function resolveA(id){try{await call({action:'resolveAlert',alertId:id,pin:adminPin_()});alerts();commandCenter()}catch(e){toast(e.message)}}
+async function exportReport(){if(!lastReport)return toast('Generate report dulu.');try{
+  const clean=v=>String(v??'');
+  const rows=lastReport.rows||[],s=lastReport.summary||{};
+  const head=['No','Nama','Nomor Kendaraan','Bagian/Divisi','Jenis Kendaraan','Access Type','Model','Warna Kendaraan','Jam Masuk','Tanggal IN','Jam Keluar','Tanggal OUT','Status','Keterangan'];
+  const NAVY={fgColor:{rgb:'1B538B'}},LIGHT={fgColor:{rgb:'EAF1FB'}},GOLD={fgColor:{rgb:'F5A623'}};
+  const thin={style:'thin',color:{rgb:'B9C4CE'}};const boxAll={top:thin,bottom:thin,left:thin,right:thin};
+  const sTitle={font:{bold:true,sz:16,color:{rgb:'FFFFFF'}},fill:NAVY,alignment:{vertical:'center'}};
+  const sMeta={font:{bold:true,sz:10,color:{rgb:'1B538B'}}};
+  const sHead={font:{bold:true,sz:10,color:{rgb:'FFFFFF'}},fill:NAVY,border:boxAll,alignment:{horizontal:'center',vertical:'center',wrapText:true}};
+  const sCell={font:{sz:10},border:boxAll,alignment:{vertical:'center',wrapText:true}};
+  const sCellAlt={font:{sz:10},fill:LIGHT,border:boxAll,alignment:{vertical:'center',wrapText:true}};
+  const sNum={font:{sz:10},border:boxAll,alignment:{horizontal:'right',vertical:'center'}};
+  const sNumAlt={font:{sz:10},fill:LIGHT,border:boxAll,alignment:{horizontal:'right',vertical:'center'}};
+  const sSection={font:{bold:true,sz:11,color:{rgb:'FFFFFF'}},fill:GOLD,border:boxAll};
+  const sTotal={font:{bold:true,sz:10},fill:LIGHT,border:boxAll,alignment:{horizontal:'right'}};
+  const sNo={font:{sz:10,bold:true},border:boxAll,alignment:{horizontal:'center',vertical:'center'}},sNoAlt={font:{sz:10,bold:true},fill:LIGHT,border:boxAll,alignment:{horizontal:'center',vertical:'center'}},sTotalL={font:{bold:true,sz:10,color:{rgb:'1B538B'}},fill:LIGHT,border:boxAll,alignment:{horizontal:'left',vertical:'center'}};
+  const cell=(v,st)=>({v:v==null?'':v,t:typeof v==='number'?'n':'s',s:st});
+  const ws={},merges=[];let R=0;
+  const put=(r,c,v,st)=>{ws[XLSX.utils.encode_cell({r,c})]=cell(v,st)};
+  put(R,0,'VACS — ACCESS REPORT • GLOBAL DATE RANGE',sTitle);merges.push({s:{r:R,c:0},e:{r:R,c:head.length-1}});R++;
+  put(R,0,'Periode',sMeta);put(R,1,String(lastReport.rangeFrom||lastReport.reportDate||'')+' → '+String(lastReport.rangeTo||lastReport.reportLogDate||lastReport.reportDate||''),sCell);put(R,2,'TYPE',sMeta);put(R,3,lastReport.filterType||'ALL',sCell);R++;
+  put(R,0,'Dibuat oleh',sMeta);put(R,1,String(lastReport.createdBy||'VACS'),sCell);put(R,2,'Waktu Export',sMeta);put(R,3,new Date().toLocaleString('id-ID'),sCell);R+=2;
+  head.forEach((h,c)=>put(R,c,h,sHead));R++;
+  const dataStart=R;
+  rows.forEach((x,idx)=>{
+    const st=idx%2?sCellAlt:sCell;
+    const vals=[clean(x.name),clean(x.plate),clean(x.division),clean(x.vehicleType||''),clean(x.accessType||x.type),clean(x.model),clean(x.color),clean(x.inTime),hariTanggal(x.inDate||x.date),clean(x.outTime),x.outDate?hariTanggal(x.outDate):'—',clean(x.status),clean(x.notes)];
+    put(R,0,idx+1,idx%2?sNoAlt:sNo);vals.forEach((v,c)=>put(R,c+1,v,st));
+    R++;
+  });
+  if(!rows.length){put(R,0,'Tidak ada data pada tanggal tersebut.',sCell);merges.push({s:{r:R,c:0},e:{r:R,c:head.length-1}});R++}
+  else{put(R,0,reportTotalText_(rows),sTotalL);for(let c=1;c<head.length;c++)put(R,c,'',sTotalL);merges.push({s:{r:R,c:0},e:{r:R,c:head.length-1}});R++}
+  R++;
+  put(R,0,'RINGKASAN KENDARAAN',sSection);merges.push({s:{r:R,c:0},e:{r:R,c:1}});R++;
+  [['IN HARI/PERIODE',s.totalIn||0],['OUT HARI/PERIODE',s.totalOut||0],['STILL INSIDE',s.totalInside||0],['DARI HARI SEBELUMNYA',s.carryoverInside||0],['MOBIL IN',s.cars||0],['MOTOR IN',s.motorcycles||0]].forEach((x,idx)=>{put(R,0,x[0],idx%2?sCellAlt:sCell);put(R,1,x[1],idx%2?sNumAlt:sNum);R++});
+  put(R,0,'KETERANGAN',sSection);merges.push({s:{r:R,c:0},e:{r:R,c:1}});R++;
+  const carry=lastReport.carryoverRows||[];
+  put(R,0,carry.length?'Kendaraan dari hari sebelumnya yang masih di dalam':'Tidak ada kendaraan dari hari sebelumnya yang masih di dalam',sCell);merges.push({s:{r:R,c:0},e:{r:R,c:1}});R++;
+  carry.forEach((x,ci)=>{put(R,0,(ci+1)+'. '+clean(x.plate),sCell);put(R,1,clean((x.vehicleType||'')+' • '+(x.inDate||'')+' '+(x.inTime||'')),sCell);R++});
+  R++;
+  put(R,0,'GRAFIK JAM MASUK / KELUAR • PERIODE AKTIF',sSection);merges.push({s:{r:R,c:0},e:{r:R,c:3}});R++;
+  ['Jam','Masuk','Keluar','Total'].forEach((h,c)=>put(R,c,h,sHead));R++;
+  const hourly=lastReport.hourly||[];
+  hourly.forEach((x,idx)=>{const st=idx%2?sCellAlt:sCell,stn=idx%2?sNumAlt:sNum;put(R,0,String(x.hour).padStart(2,'0')+':00',st);put(R,1,x.in||0,stn);put(R,2,x.out||0,stn);put(R,3,(x.in||0)+(x.out||0),stn);R++});
+  const tIn=hourly.reduce((a,x)=>a+(x.in||0),0),tOut=hourly.reduce((a,x)=>a+(x.out||0),0);
+  put(R,0,'TOTAL',sTotal);put(R,1,tIn,sTotal);put(R,2,tOut,sTotal);put(R,3,tIn+tOut,sTotal);R++;
+  ws['!ref']=XLSX.utils.encode_range({s:{r:0,c:0},e:{r:R,c:head.length-1}});
+  ws['!merges']=merges;
+  ws['!cols']=[{wch:6},{wch:22},{wch:16},{wch:20},{wch:18},{wch:20},{wch:16},{wch:16},{wch:10},{wch:20},{wch:10},{wch:20},{wch:16},{wch:44}];
+  ws['!rows']=[{hpt:22}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'VACS REPORT');
+  const fname='VACS_'+fileDateName(lastReport.reportLogDate||lastReport.reportDate)+'.xlsx';
+  let withChart=false;const svgEl=document.querySelector('#reportChart svg');
+  if(svgEl&&window.ExcelJS){
+    try{
+      const buf=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+      const ewb=new ExcelJS.Workbook();await ewb.xlsx.load(buf);
+      const wc=ewb.addWorksheet('GRAFIK',{views:[{showGridLines:false}]});
+      const same=String(lastReport.rangeFrom||lastReport.reportDate||'')===String(lastReport.rangeTo||lastReport.reportLogDate||lastReport.reportDate||'');
+      wc.getCell('A1').value=same?'GRAFIK JAM MASUK / KELUAR':'GRAFIK HARIAN MASUK / KELUAR • PERIODE AKTIF';wc.getCell('A1').font={bold:true,size:14,color:{argb:'FF1B538B'}};
+      wc.getCell('A2').value=hariTanggal(lastReport.reportLogDate||lastReport.reportDate)+' • TYPE: '+(lastReport.filterType||'ALL');wc.getCell('A2').font={size:10,color:{argb:'FF475569'}};
+      const {dataUrl,w,h}=await svgToPng_(svgEl,8);
+      const id=ewb.addImage({base64:dataUrl,extension:'png'});const W=1100,H=Math.round(W*h/w);
+      wc.addImage(id,{tl:{col:0,row:3},ext:{width:W,height:H}});
+      const out=await ewb.xlsx.writeBuffer();
+      downloadBlob(new Blob([out],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),fname,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      withChart=true;
+    }catch(e){console.warn('Excel chart gagal, fallback tanpa grafik',e)}
+  }
+  if(!withChart)XLSX.writeFile(wb,fname);
+  toast(withChart?'✅ Excel + grafik berhasil dibuat.':'✅ Excel profesional berhasil dibuat.')
+}catch(e){toast('❌ Export Excel gagal: '+e.message)}}
+async function svgToPng_(svgEl,scale){
+  scale=scale||10;
+  const vb=svgEl.viewBox&&svgEl.viewBox.baseVal;
+  const w=(vb&&vb.width)||760,h=(vb&&vb.height)||240;
+  const xml=new XMLSerializer().serializeToString(svgEl);
+  const url='data:image/svg+xml;charset=utf-8;base64,'+btoa(unescape(encodeURIComponent(xml)));
+  const img=new Image();
+  await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});
+  scale=Math.max(2,Math.min(scale,Math.sqrt(14e6/(w*h)),16000/Math.max(w,h)));
+  const cv=document.createElement('canvas');cv.width=Math.round(w*scale);cv.height=Math.round(h*scale);
+  const ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.fillStyle='#ffffff';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.drawImage(img,0,0,cv.width,cv.height);
+  return{dataUrl:cv.toDataURL('image/png',1.0),w,h};
+}
+async function printReport(){if(!lastReport)return toast('Generate report dulu.');try{const C=window.jspdf?.jsPDF;if(!C)throw Error('PDF library belum siap.');const doc=new C({orientation:'landscape',unit:'mm',format:'a4'});doc.setFontSize(14);doc.text('VACS — ACCESS REPORT',14,12);doc.setFontSize(8);doc.text(String(lastReport.rangeFrom||lastReport.reportDate||'')+' → '+String(lastReport.rangeTo||lastReport.reportLogDate||lastReport.reportDate||'')+' • TYPE: '+(lastReport.filterType||'ALL'),14,18);const rows=(lastReport.rows||[]).map((x,i)=>[i+1,x.name,x.plate,x.division,x.vehicleType||'',x.accessType||x.type||'',x.model,x.color,x.inTime,hariTanggal(x.inDate||x.date),x.outTime,x.outDate?hariTanggal(x.outDate):'',x.status,x.notes]);const head=['No','Nama','Nomor Kendaraan','Bagian/Divisi','Jenis Kendaraan','Access Type','Model','Warna','IN','Tanggal IN','OUT','Tanggal OUT','Status','Keterangan'];doc.autoTable({startY:23,head:[head],body:rows,foot:rows.length?[[{content:reportTotalText_(lastReport.rows||[]),colSpan:14,styles:{halign:'left',fontStyle:'bold',fillColor:[234,241,251],textColor:[27,83,139]}}]]:undefined,showFoot:'lastPage',columnStyles:{0:{halign:'center',cellWidth:8,fontStyle:'bold'}},theme:'grid',styles:{fontSize:5.7,cellPadding:1.3,overflow:'linebreak',valign:'top'},headStyles:{fillColor:[27,83,139],textColor:255}});let y=doc.lastAutoTable.finalY+7;doc.setFontSize(9);doc.text('RINGKASAN KENDARAAN',14,y);y+=5;const ps=lastReport.summary||{};const pbody=[['IN HARI/PERIODE',String(ps.totalIn||0)],['OUT HARI/PERIODE',String(ps.totalOut||0)],['STILL INSIDE',String(ps.totalInside||0)],['DARI HARI SEBELUMNYA',String(ps.carryoverInside||0)],['MOBIL IN',String(ps.cars||0)],['MOTOR IN',String(ps.motorcycles||0)]];doc.autoTable({startY:y,head:[['Keterangan','Jumlah']],body:pbody,theme:'grid',styles:{fontSize:7,cellPadding:1.5},headStyles:{fillColor:[27,83,139],textColor:255}});y=doc.lastAutoTable.finalY+6;const carryPdf=lastReport.carryoverRows||[];doc.text('KENDARAAN DARI HARI SEBELUMNYA',14,y);y+=4;doc.autoTable({startY:y,head:[['Kendaraan','Jenis','Masuk']],body:carryPdf.length?carryPdf.map(x=>[x.plate||'',x.vehicleType||'',(x.inDate||'')+' '+(x.inTime||'')]):[['—','Tidak ada','']],theme:'grid',styles:{fontSize:7,cellPadding:1.5},headStyles:{fillColor:[27,83,139],textColor:255}});
+  const svgEl=document.querySelector('#reportChart svg');
+  if(svgEl){
+    doc.addPage('a4','landscape');
+    doc.setFontSize(13);doc.text(String(lastReport.rangeFrom||lastReport.reportDate||'')===String(lastReport.rangeTo||lastReport.reportLogDate||lastReport.reportDate||'')?'GRAFIK JAM MASUK / KELUAR':'GRAFIK HARIAN MASUK / KELUAR • PERIODE AKTIF',14,14);
+    doc.setFontSize(8);doc.text(hariTanggal(lastReport.reportLogDate||lastReport.reportDate)+' • TYPE: '+(lastReport.filterType||'ALL'),14,20);
+    const {dataUrl,w,h}=await svgToPng_(svgEl,10);
+    const imgW=270,imgH=imgW*(h/w);
+    doc.addImage(dataUrl,'PNG',13.5,26,imgW,imgH,undefined,'FAST');
+  }
+  const blob=doc.output('blob');downloadBlob(blob,'VACS_'+fileDateName(lastReport.reportLogDate||lastReport.reportDate)+'.pdf','application/pdf');toast('✅ PDF berhasil disiapkan.')}catch(e){toast('❌ PDF gagal: '+e.message)}}
+
+(function(){const ov=$('introOverlay'),btn=$('introContinueBtn'),vid=$('introVideo'),unmuteBtn=$('introUnmuteBtn'),hint=$('introHint');
+function enableContinue(){if(!btn)return;btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';if(hint){hint.textContent='Tekan tombol kapan saja untuk masuk ke aplikasi';hint.style.animation='none';hint.style.color='#b8c2d0';hint.style.fontSize='11px';hint.style.fontWeight='700';hint.style.textShadow='none'}}
+function enterApp(){if(!ov||btn.disabled)return;try{vid&&vid.pause()}catch(e){}ov.style.display='none';ov.remove()}
+if(vid){const p=vid.play();
+if(p&&p.then){p.then(()=>{if(!vid.muted)enableContinue()}).catch(()=>{vid.muted=true;vid.play().catch(()=>{});if(unmuteBtn)unmuteBtn.style.display='block'})}
+}
+unmuteBtn&&unmuteBtn.addEventListener('click',()=>{vid.muted=false;vid.play().catch(()=>{});unmuteBtn.style.display='none';enableContinue()});
+btn&&btn.addEventListener('click',enterApp);
+})();
+function setResult(id,msg,cls){const el=$(id);if(!el)return;el.textContent=msg;el.className='result show '+(cls||'ok')}
+function switchTab(tab){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===tab));const g=$('gdrBar');if(g)g.style.display=tab==='gate'?'none':'';if(tab==='command'&&!switchTab.__cc){switchTab.__cc=1;commandCenter()}}
+async function deleteVehicle(){const plate=$('delPlate').value.trim(),pin=$('adminPin').value.trim();if(!plate)return setResult('deleteResult','Nomor kendaraan wajib diisi.','err');if(!pin)return setResult('deleteResult','PIN Admin wajib diisi.','err');try{const r=await call({action:'deleteVehicle',plate,pin});if(!r.ok)throw Error(r.message);setResult('deleteResult','✓ '+(r.data?.message||'Kendaraan dihapus dari MASTER.'),'ok');$('delPlate').value='';$('adminPin').value='';dash()}catch(e){setResult('deleteResult','❌ '+e.message,'err')}}
+async function deleteAccessEventsRange(){
+  const fromDate=$('delEvFrom').value,toDate=$('delEvTo').value||fromDate,pin=$('delEvPin').value.trim();
+  if(!fromDate)return setResult('deleteEventsResult','Tanggal awal wajib diisi.','err');
+  if(!pin)return setResult('deleteEventsResult','PIN Admin wajib diisi.','err');
+  const label=fromDate===toDate?fromDate:(fromDate+' s/d '+toDate);
+  if(!confirm('Yakin hapus PERMANEN semua data ACCESS_EVENTS pada '+label+'?\n\nAksi ini tidak bisa dibatalkan.'))return;
+  const b=$('deleteAccessEventsBtn');b.disabled=true;
+  try{
+    const r=await call({action:'deleteAccessEventsRange',fromDate,toDate,pin},30000);
+    if(!r.ok)throw Error(r.message);
+    setResult('deleteEventsResult','✓ '+(r.data?.message||'Selesai.'),'ok');
+    $('delEvPin').value='';
+    dash();try{await commandCenter()}catch(e){}
+  }catch(e){setResult('deleteEventsResult','❌ '+e.message,'err')}
+  finally{b.disabled=false}
+}
+/* ================= GLOBAL DATE RANGE (GDR) ================= */
+let GDR={preset:'day',from:localISO(),to:localISO()};
+function gdrPad(n){return String(n).padStart(2,'0')}
+function gdrISO(d){return `${d.getFullYear()}-${gdrPad(d.getMonth()+1)}-${gdrPad(d.getDate())}`}
+function gdrParseISO(iso){const[y,m,d]=String(iso).split('-').map(Number);return new Date(y,(m||1)-1,d||1)}
+function gdrAddDays(iso,n){const d=gdrParseISO(iso);d.setDate(d.getDate()+n);return gdrISO(d)}
+function gdrMonthRange(iso){const d=gdrParseISO(iso);return{from:gdrISO(new Date(d.getFullYear(),d.getMonth(),1)),to:gdrISO(new Date(d.getFullYear(),d.getMonth()+1,0))}}
+function gdrRangeDates(){const out=[];let cur=GDR.from,guard=0;while(cur<=GDR.to&&guard<400){out.push(cur);cur=gdrAddDays(cur,1);guard++}return out}
+function gdrReadoutText(){if(GDR.from===GDR.to)return 'Periode aktif: '+isoToLong(GDR.from);return 'Periode aktif: '+isoToLong(GDR.from)+'  →  '+isoToLong(GDR.to)}
+function gdrPersist(){try{localStorage.setItem('vacsGdrState',JSON.stringify(GDR))}catch(e){}}
+function gdrRestore(){try{const s=JSON.parse(localStorage.getItem('vacsGdrState')||'null');if(s&&s.from&&s.to){GDR=s;return true}}catch(e){}return false}
+function gdrEnsureValid(){if(!GDR.from||!GDR.to)throw Error('Pilih periode Global Date Range terlebih dahulu.');if(GDR.from>GDR.to)throw Error('FROM DATE tidak boleh lebih besar dari TO DATE.')}
+function gdrRender(){
+  const err=$('gdrError');
+  if(GDR.from>GDR.to){if(err){err.textContent='❌ FROM DATE tidak boleh lebih besar dari TO DATE.';err.className='result show err'}}
+  else if(err){err.className='result';err.textContent=''}
+  const fromEl=document.querySelector('.gdrFrom'),toEl=document.querySelector('.gdrTo');
+  if(fromEl)fromEl.value=GDR.from;
+  if(toEl)toEl.value=GDR.to;
+  document.querySelectorAll('.gdrPresetBtn').forEach(b=>b.classList.toggle('active',b.dataset.gdrPreset===GDR.preset));
+  const readout=document.querySelector('.gdrReadout');
+  if(readout)readout.textContent=gdrReadoutText();
+
+  if($('robDate')){$('robDate').value=GDR.to;$('robDate').disabled=true;$('robDate').title='Dikontrol oleh Global Date Range di atas'}
+  gdrPersist();
+}
+function gdrSetPreset(preset){
+  const today=localISO();
+  if(preset==='day')GDR={preset,from:today,to:today};
+  else if(preset==='week')GDR={preset,from:gdrAddDays(today,-6),to:today};
+  else if(preset==='month'){const r=gdrMonthRange(today);GDR={preset,from:r.from,to:r.to}}
+  else GDR={preset:'custom',from:GDR.from||today,to:GDR.to||today};
+  gdrRender();
+}
+function gdrOnManualChange(which,val){if(!val)return;GDR={...GDR,preset:'custom',[which]:val};gdrRender()}
+function gdrBind(){
+  document.querySelectorAll('.gdrPresetBtn').forEach(b=>b.addEventListener('click',()=>gdrSetPreset(b.dataset.gdrPreset)));
+  const fromEl=document.querySelector('.gdrFrom'),toEl=document.querySelector('.gdrTo');
+  fromEl?.addEventListener('change',()=>gdrOnManualChange('from',fromEl.value));
+  toEl?.addEventListener('change',()=>gdrOnManualChange('to',toEl.value));
+}
+function gdrMergeReportData(acc,data,iso,isFirst,isLast){
+  const s=data.summary||{},at=s.accessType24h||{};
+  if(!acc)acc={summary:{openingInside:0,totalIn:0,totalOut:0,totalInside:0,cars:0,motorcycles:0,total24h:0,accessType24h:{}},rows:[],hourly:Array.from({length:24},(_,h)=>({hour:h,in:0,out:0})),dailyTrend:[],createdBy:data.createdBy};
+  if(isFirst)acc.summary.openingInside=Number(s.openingInside||0);
+  acc.summary.totalIn+=Number(s.totalIn||0);
+  acc.summary.totalOut+=Number(s.totalOut||0);
+  acc.summary.cars+=Number(s.cars||0);
+  acc.summary.motorcycles+=Number(s.motorcycles||0);
+  acc.summary.total24h+=Number(s.total24h||0);
+  if(isLast)acc.summary.totalInside=Number(s.totalInside||0);
+  Object.keys(at).forEach(k=>{acc.summary.accessType24h[k]=(acc.summary.accessType24h[k]||0)+Number(at[k]||0)});
+  (data.rows||[]).forEach(r=>acc.rows.push(r));
+  (data.hourly||[]).forEach(h=>{const slot=acc.hourly[Number(h.hour)||0];if(slot){slot.in+=Number(h.in||0);slot.out+=Number(h.out||0)}});
+  (data.dailyTrend||[]).forEach(d=>{const hit=acc.dailyTrend.find(x=>x.iso===d.iso);if(hit){hit.in+=Number(d.in||0);hit.out+=Number(d.out||0)}else acc.dailyTrend.push({iso:d.iso,date:d.date,in:Number(d.in||0),out:Number(d.out||0)})});
+  acc.dailyTrend.sort((a,b)=>String(a.iso).localeCompare(String(b.iso)));
+  return acc;
+}
+async function gdrFetchRangeReport(type){
+  gdrEnsureValid();
+  const r=await call({action:'report',from:GDR.from,to:GDR.to,type},90000);
+  if(!r.ok)throw Error(r.message||'Report gagal untuk periode Global Date Range.');
+  const data=r.data||{};
+  data.filterType=type;
+  data.reportDate=GDR.from;
+  data.reportLogDate=GDR.to;
+  data.rangeFrom=GDR.from;
+  data.rangeTo=GDR.to;
+  return data;
+}
+function bind(){if($('mAccessType'))$('mAccessType').addEventListener('change',updateCustomAccessUI);if($('aType'))$('aType').addEventListener('change',updateCustomAccessUI);
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+$('search')?.addEventListener('input',searchVehicle);
+$('inBtn')?.addEventListener('click',()=>gateAccess('IN'));
+$('outBtn')?.addEventListener('click',()=>gateAccess('OUT'));
+$('refreshCC')?.addEventListener('click',commandCenter);$('ccFrom')?.addEventListener('change',()=>{if($('ccFrom').value){GDR={...GDR,preset:'custom',from:$('ccFrom').value};gdrRender();commandCenter()}});$('ccTo')?.addEventListener('change',()=>{if($('ccTo').value){GDR={...GDR,preset:'custom',to:$('ccTo').value};gdrRender();commandCenter()}});$('ccType')?.addEventListener('change',commandCenter);$('refreshDashboard')?.addEventListener('click',async()=>{await dash();await commandCenter()});$('dashDate')?.addEventListener('change',dash);$('dashType')?.addEventListener('change',dash);
+$('createAuth')?.addEventListener('click',createAuth);
+$('refreshAuth')?.addEventListener('click',refreshAuth);
+$('xIn')?.addEventListener('click',()=>offlineAuth('IN'));
+$('xOut')?.addEventListener('click',()=>offlineAuth('OUT'));
+$('syncNow')?.addEventListener('click',syncQueue);
+$('saveMasterBtn')?.addEventListener('click',saveMaster);
+$('masterSearchBtn')?.addEventListener('click',masterSearch);
+$('masterRefreshBtn')?.addEventListener('click',clearMasterSearch);
+$('masterSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')masterSearch()});
+$('clearMasterBtn')?.addEventListener('click',clearM);
+$('deleteVehicleBtn')?.addEventListener('click',deleteVehicle);
+$('deleteAccessEventsBtn')?.addEventListener('click',deleteAccessEventsRange);
+$('importBtn')?.addEventListener('click',importM);
+$('templateBtn')?.addEventListener('click',template);
+$('refreshCurrent')?.addEventListener('click',current);
+$('refreshExceptions')?.addEventListener('click',exceptions);
+$('exceptionSearch')?.addEventListener('keyup',e=>{if(e.key==='Enter')exceptions()});
+$('refreshAlerts')?.addEventListener('click',alerts);
+$('refreshAudit')?.addEventListener('click',audit);
+$('auditSearch')?.addEventListener('keyup',e=>{if(e.key==='Enter')audit()});
+$('backupBtn')?.addEventListener('click',backup);
+$('generateReport')?.addEventListener('click',report);$('rPeriodType')?.addEventListener('change',()=>{const p=$('rPeriodType').value;if(p==='weekly')gdrSetPreset('week');else if(p==='monthly')gdrSetPreset('month');else gdrSetPreset('day')});
+$('exportReport')?.addEventListener('click',exportReport);
+$('printReport')?.addEventListener('click',printReport);
+}
+try{initTypes();if($('dashDate'))$('dashDate').value=localISO();if($('ccFrom'))$('ccFrom').value=localISO();if($('ccTo'))$('ccTo').value=localISO();if($('aFrom'))$('aFrom').value=localISO();if($('aUntil'))$('aUntil').value=localISO();if($('deviceId'))$('deviceId').value=localStorage.getItem('vacsDeviceId')||device();bind();gdrBind();gdrRestore();if($('rPeriodType'))$('rPeriodType').value='daily';gdrRender();if($('gdrBar'))$('gdrBar').style.display='none';}catch(e){console.error('VACS UI initialization failed:',e);toast('❌ UI gagal diinisialisasi: '+e.message)}
+/* VACS FAST STARTUP / SWR
+   Jangan tahan UI sampai master/auth/dashboard selesai. Tampilkan cache lokal dulu,
+   lalu refresh server di background. Ini menghilangkan startup waterfall:
+   master -> health -> dashboard -> auth -> queue. */
+let __vacsReconnectBusy=false,__vacsReconnectDelay=30000;
+async function hydrateBackground_(opts={}){
+  const tasks=[];
+  if(opts.master!==false) tasks.push(syncMasterCache().catch(e=>console.debug('[VACS] background master refresh',e)));
+  if(opts.gates!==false) tasks.push(loadGates().catch(e=>console.debug('[VACS] background gates refresh',e)));
+  if(opts.auth!==false) tasks.push(refreshAuth().catch(e=>console.debug('[VACS] background auth refresh',e)));
+  if(opts.dashboard!==false) tasks.push(dash().catch(e=>console.debug('[VACS] background dashboard refresh',e)));
+  if(opts.queue!==false) tasks.push(syncQueue().catch(e=>console.debug('[VACS] background queue sync',e)));
+  await Promise.allSettled(tasks);
+}
+async function __vacsRecover(){
+  if(__vacsReconnectBusy)return;
+  __vacsReconnectBusy=true;
+  try{
+    const ok=await health();
+    if(ok){
+      __vacsReconnectDelay=30000;
+      // Refresh independently; one slow endpoint must not block the others.
+      await hydrateBackground_({master:true,gates:true,auth:true,dashboard:true,queue:true});
+    }else{
+      __vacsReconnectDelay=Math.min(__vacsReconnectDelay*2,120000);
+    }
+  }finally{
+    __vacsReconnectBusy=false;
+    setTimeout(__vacsRecover,__vacsReconnectDelay);
+  }
+}
+(async()=>{
+  // FIRST PAINT: local cache only. Network authority is resolved in a controlled order.
+  setConnectionState_('CONNECTING');
+  try{
+    const cached=await masterAll();
+    if(cached.length){
+      mergeAccessTypeOptions(cached.map(x=>x.accessType));
+      setConnectionState_('CONNECTING',`LOCAL MASTER ${cached.length} tersedia; verifikasi server berjalan.`);
+      setMasterStatus(`• LOCAL CACHE ${cached.length} • MEMUAT SERVER...`,'warn');
+    }else{
+      const raw=JSON.parse(localStorage.getItem('vacsAuthCache')||'[]');
+      authCache=Array.isArray(raw)?raw:[];
+      renderAuth();
+      setMasterStatus('• LOCAL CACHE BELUM TERSEDIA • MEMUAT SERVER...','warn');
+    }
+  }catch(e){
+    authCache=JSON.parse(localStorage.getItem('vacsAuthCache')||'[]');
+    renderAuth();
+  }
+
+  // CONNECTION GATE: verify GAS + Spreadsheet first, then verify/sync MASTER.
+  setTimeout(async()=>{
+    const live=await health();
+    if(live){
+      await syncMasterCache();
+      await Promise.allSettled([
+        loadGates(),
+        refreshAuth(),
+        dash(),
+        syncQueue()
+      ]);
+    }else{
+      // First probe can be slow/cold. Keep the state honest without inventing OFFLINE.
+      const n=await masterCount();
+      if(n)setConnectionState_('OFFLINE_READY',`MASTER lokal ${n}; menunggu verifikasi server.`);
+      else setConnectionState_('CONNECTING','Menunggu respons Apps Script.');
+    }
+  },0);
+
+  setTimeout(__vacsRecover,__vacsReconnectDelay);
+})();
+window.addEventListener('online',()=>{__vacsReconnectDelay=15000;__vacsRecover()});
+</script><script>
+/* ================= VACS OFFICE ROBOT — AUTOMATION ORCHESTRATOR (add-only) =================
+   Orkestrator di ATAS mesin yang sudah ada. TIDAK menduplikasi mesin formula/spreadsheet
+   TIDAK menduplikasi mesin kalkulasi report (yang tetap dihitung di server
+   GAS oleh report_()). Robot ini hanya: memanggil action API yang sama dengan tab REPORT/
+   CURRENTLY INSIDE (read-only), lalu menjalankan cleaning ringan + quality-check di client,
+   lalu memakai ULANG renderHourlyChart()/exportReport()/printReport() yang sudah ada untuk
+   output. Isolated IIFE - tidak menimpa variabel/fungsi VACS manapun.
+==================================================================================== */
+(function(){
+const ROBOT_PROFILES={
+  daily:{needsDate:false,needsType:true},
+  weekly:{needsDate:false,needsType:true},
+  monthly:{needsDate:false,needsType:true},
+  current:{needsDate:false,needsType:false}
+};
+function robSteps(profile){
+  const base=[
+    {k:'collect',label:'Mengumpulkan data VACS'},
+    {k:'clean',label:'Membersihkan & normalisasi data'},
+    {k:'validate',label:'Memvalidasi data'},
+    {k:'calc',label:'Menghitung total & distribusi'},
+    {k:'analytics',label:'Membuat analitik'},
+  ];
+  if(profile!=='current')base.push({k:'chart',label:'Membuat grafik'});
+  base.push({k:'format',label:'Memformat ringkasan profesional'});
+  base.push({k:'qc',label:'Quality check'});
+  base.push({k:'excel',label:'Menyiapkan Excel'});
+  if(profile!=='current')base.push({k:'pdf',label:'Menyiapkan PDF'});
+  return base;
+}
+let robStepDefs=[];
+function robRenderSteps(current,status){
+  const html=robStepDefs.map(s=>{
+    let cls='robotStep',mark='•';
+    if(status[s.k]==='done'){cls+=' done';mark='✓'}
+    else if(status[s.k]==='fail'){cls+=' fail';mark='✕'}
+    else if(s.k===current){cls+=' active';mark='…'}
+    return `<div class="${cls}"><span class="dot">${mark}</span><span>${s.label}</span></div>`;
+  }).join('');
+  $('robProgress').className='robotSteps';
+  $('robProgress').innerHTML=html;
+}
+function robNum(v){const n=Number(v);return isNaN(n)?0:n}
+function robRunQC_Daily(data){
+  const server=data&&data.integrity;
+  if(!(server&&server.source==='SERVER'))return{ok:false,advisory:false,issues:['SERVER INTEGRITY TIDAK TERSEDIA — laporan tidak boleh dianggap VALID.'],advisories:[],server:null};
+  /*
+     QC ROBOT V2:
+     - VALID = event reconciliation + sequence integrity benar.
+     - WARNING pada server tidak otomatis berarti laporan invalid; plateValidation
+       secara eksplisit ditandai advisory oleh backend.
+     - Hanya anomaly struktural/data yang menggagalkan QC.
+  */
+  const crossOk=server.eventCrossCheck ? server.eventCrossCheck.ok !== false : server.status==='VALID';
+  const seqOk=server.sequence ? server.sequence.ok !== false : server.status==='VALID';
+  const critical=[];
+  const cross=server.eventCrossCheck||{};
+  const seq=server.sequence||{};
+  if(!crossOk)critical.push(`EVENT ID RECONCILIATION: ${cross.missingInLog?.length||0} missing di ACCESS_LOG, ${cross.missingInEvents?.length||0} missing di ACCESS_EVENTS, ${cross.fieldMismatches?.length||0} field mismatch.`);
+  if(!seqOk)critical.push(`SEQUENCE: ${seq.anomalies?.length||0} anomaly.`);
+  const advisories=(server.plateValidation&&Array.isArray(server.plateValidation.issues))?server.plateValidation.issues:[];
+  return{ok:critical.length===0,advisory:critical.length===0&&advisories.length>0,issues:critical,advisories,server};
+}
+function robQCDetailHtml(qc){
+  const s=qc&&qc.server;
+  if(!s)return '';
+  const c=s.eventCrossCheck||{},q=s.sequence||{};
+  const missLog=Array.isArray(c.missingInLog)?c.missingInLog:[];
+  const missEv=Array.isArray(c.missingInEvents)?c.missingInEvents:[];
+  const mism=Array.isArray(c.fieldMismatches)?c.fieldMismatches:[];
+  const an=Array.isArray(q.anomalies)?q.anomalies:[];
+  const list=(arr,fn)=>arr.slice(0,10).map(fn).join('<br>')+(arr.length>10?`<br>… +${arr.length-10} lainnya`: '');
+  const parts=[];
+  parts.push(`<b>QC SERVER DIAGNOSTIC</b>`);
+  parts.push(`Status server: <b>${esc(s.status||'UNKNOWN')}</b> • Event checked: ${c.checkedEventIds||0} • Log checked: ${c.checkedLogEventIds||0}`);
+  if(missLog.length)parts.push(`<b>Missing di ACCESS_LOG (${missLog.length})</b><br>${list(missLog,esc)}`);
+  if(missEv.length)parts.push(`<b>Missing di ACCESS_EVENTS (${missEv.length})</b><br>${list(missEv,esc)}`);
+  if(mism.length)parts.push(`<b>Field mismatch (${mism.length})</b><br>${list(mism,x=>esc(`${x.eventId||''} • ${x.field||''}: event=${x.eventValue||''} / log=${x.logValue||''}`))}`);
+  if(an.length)parts.push(`<b>Sequence anomaly (${an.length})</b><br>${list(an,x=>esc(`${x.eventId||''} • ${x.plate||''} • ${x.type||''}`))}`);
+  return `<details class="robotQCDiag"><summary>🔎 Lihat detail penyebab QC</summary><div>${parts.join('<hr>')}</div></details>`;
+}
+function robRunQC_Current(rows){
+  const issues=[];
+  if(!Array.isArray(rows))issues.push('Data Currently Inside bukan array yang valid.');
+  else{
+    const blanks=rows.filter(x=>!x.plate).length;
+    if(blanks>0)issues.push(`${blanks} baris tanpa Nomor Kendaraan (data tidak lengkap, tetap ditampilkan apa adanya).`);
+  }
+  return{ok:issues.filter(m=>!m.includes('tetap ditampilkan')).length===0,issues};
+}
+function robPct(n,t){return t?((n/t)*100).toFixed(1):'0.0'}
+function robRenderDailyResult(data,qc){
+  const s=data.summary||{};
+  const qcHtml=qc.ok?(qc.advisory?`<div class="robotQC warn">⚠ QUALITY CHECK LULUS DENGAN ADVISORY<br>${qc.advisories.map(x=>esc(x.reason||('Plat '+(x.plate||'')+' perlu diperiksa.'))).join('<br>')}</div>`:'<div class="robotQC ok">✓ QUALITY CHECK LULUS — integritas data konsisten.</div>'):`<div class="robotQC fail">✕ QUALITY CHECK GAGAL<br>${qc.issues.map(esc).join('<br>')}</div>`;
+  const qcDiag=robQCDetailHtml(qc);
+  $('robResultWrap').innerHTML=`<div class="card"><div class="label">📊 RINGKASAN — ${esc(data.rangeFrom&&data.rangeTo?data.rangeFrom+' → '+data.rangeTo:isoToLong(data.reportLogDate||data.reportDate))} • TYPE ${esc(data.filterType||'ALL')}</div>
+  <div class="cc"><div class="stat"><b>${s.openingInside||0}</b><span>OPENING INSIDE</span></div><div class="stat"><b>${s.totalIn||0}</b><span>IN</span></div><div class="stat"><b>${s.totalOut||0}</b><span>OUT</span></div><div class="stat"><b>${s.totalInside||0}</b><span>STILL INSIDE</span></div><div class="stat"><b>${s.cars||0}</b><span>MOBIL</span></div><div class="stat"><b>${s.motorcycles||0}</b><span>MOTOR</span></div></div>
+  ${qcHtml}${qcDiag}
+  <div class="label" style="margin-top:12px">KENDARAAN DARI HARI SEBELUMNYA</div>
+  <div class="tablewrap"><table class="table"><tr><th>Kendaraan</th><th>Jenis</th><th>Masuk</th></tr>${(data.carryoverRows||[]).map(x=>`<tr><td>${esc(x.plate||'')}</td><td>${esc(x.vehicleType||'')}</td><td>${esc(x.inDate||'')} ${esc(x.inTime||'')}</td></tr>`).join('')||'<tr><td colspan="3">Tidak ada kendaraan dari hari sebelumnya yang masih di dalam.</td></tr>'}</table></div>
+  <div class="hint" style="margin-top:8px;font-weight:900">STILL INSIDE = IN periode + kendaraan dari hari sebelumnya yang belum OUT.</div>
+  <div class="label" style="margin-top:12px">GRAFIK AKTIVITAS PER JAM</div>
+  <div>${renderHourlyChart(data.hourly||[],{title:'Access Activity by Hour'})}</div>
+  <div class="actions" style="margin-top:12px"><button id="robExportExcel" class="btn orange" type="button">⬇ EXCEL</button><button id="robPrintPdf" class="btn" type="button">🖨 PDF</button></div>
+  <div class="hint" style="margin-top:6px">Data identik dengan tab REPORT (tanggal &amp; type sudah disinkron di sana).</div>
+  </div>`;
+  $('robExportExcel').addEventListener('click',exportReport);
+  $('robPrintPdf').addEventListener('click',printReport);
+}
+function robExportCurrentExcel(rows){
+  if(!window.XLSX)return toast('Library Excel belum siap.');
+  const head=['No','Nama','Nomor Kendaraan','Divisi','Access Type','Jam IN','Tanggal','Keterangan'];
+  const carryN=rows.filter(x=>/Menginap/i.test(x.notes||'')).length;
+  const data=[['VACS — CURRENTLY INSIDE'],['Dibuat',new Date().toLocaleString('id-ID')],[],head,...rows.map((x,i)=>[i+1,x.name||'',x.plate||'',x.division||'',x.accessType||x.type||'',x.inTime||'',x.date||'',x.notes||'']),[],['TOTAL: '+rows.length+' KENDARAAN DI DALAM • '+carryN+' menginap dari hari sebelumnya • '+(rows.length-carryN)+' masuk hari ini']];
+  const ws=XLSX.utils.aoa_to_sheet(data);ws['!cols']=[{wch:6},{wch:24},{wch:18},{wch:22},{wch:20},{wch:12},{wch:14},{wch:46}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'CURRENTLY INSIDE');
+  XLSX.writeFile(wb,'VACS_CURRENTLY_INSIDE_'+Date.now()+'.xlsx');
+  toast('✅ Excel Currently Inside berhasil dibuat.');
+}
+function robRenderCurrentResult(rows,qc){
+  const byType={},byDiv={};
+  rows.forEach(x=>{const t=x.accessType||x.type||'(tidak diketahui)';byType[t]=(byType[t]||0)+1;const d=x.division||'(tidak diketahui)';byDiv[d]=(byDiv[d]||0)+1});
+  const typeRows=Object.keys(byType).sort().map(k=>`<tr><td>${esc(k)}</td><td>${byType[k]}</td></tr>`).join('')||'<tr><td colspan="2">Tidak ada data.</td></tr>';
+  const divRows=Object.keys(byDiv).sort().map(k=>`<tr><td>${esc(k)}</td><td>${byDiv[k]}</td></tr>`).join('')||'<tr><td colspan="2">Tidak ada data.</td></tr>';
+  const qcHtml=qc.ok?'<div class="robotQC ok">✓ QUALITY CHECK LULUS.</div>':`<div class="robotQC fail">⚠ PERHATIAN<br>${qc.issues.map(esc).join('<br>')}</div>`;
+  $('robResultWrap').innerHTML=`<div class="card"><div class="label">🚗 CURRENTLY INSIDE — ${rows.length} KENDARAAN</div>
+  ${qcHtml}
+  <div class="formgrid" style="margin-top:10px">
+  <div><div class="label">PER ACCESS TYPE</div><div class="tablewrap"><table class="table"><tr><th>Type</th><th>Jumlah</th></tr>${typeRows}</table></div></div>
+  <div><div class="label">PER DIVISI</div><div class="tablewrap"><table class="table"><tr><th>Divisi</th><th>Jumlah</th></tr>${divRows}</table></div></div>
+  </div>
+  <div class="actions" style="margin-top:12px"><button id="robExportExcelCurrent" class="btn orange" type="button">⬇ EXCEL</button></div>
+  </div>`;
+  $('robExportExcelCurrent').addEventListener('click',()=>robExportCurrentExcel(rows));
+}
+async function robGenerate(){
+  const profile=$('robProfile').value;
+  robStepDefs=robSteps(profile);
+  const status={};
+  $('robResultWrap').innerHTML='';
+  const btn=$('robGenBtn');btn.disabled=true;
+  const mark=async(k,ok)=>{status[k]=ok?'done':'fail';robRenderSteps(null,status);await new Promise(r=>setTimeout(r,0))};
+  const setActive=async(k)=>{robRenderSteps(k,status);await new Promise(r=>setTimeout(r,0))};
+  try{
+    await setActive('collect');
+    let data,rows;
+    if(profile!=='current'){
+      if(profile==='weekly')gdrSetPreset('week');else if(profile==='monthly')gdrSetPreset('month');
+      gdrEnsureValid();
+      const type=$('robType').value;
+      data=await gdrFetchRangeReport(type);
+      lastReport=data;
+      if($('rType'))$('rType').value=type;
+    }else{
+      const r=await call({action:'current'},20000);
+      rows=r.data||[];
+    }
+    await mark('collect',true);
+    await setActive('clean');
+    if(profile!=='current'){(data.rows||[]).forEach(x=>{x.name=String(x.name||'').trim();x.plate=String(x.plate||'').trim().toUpperCase()})}
+    else{rows.forEach(x=>{x.name=String(x.name||'').trim();x.plate=String(x.plate||'').trim().toUpperCase()})}
+    await mark('clean',true);
+    await setActive('validate');
+    const qc=profile!=='current'?robRunQC_Daily(data):robRunQC_Current(rows);
+    await mark('validate',true);
+    await setActive('calc');await mark('calc',true);
+    await setActive('analytics');await mark('analytics',true);
+    if(profile!=='current'){await setActive('chart');await mark('chart',true)}
+    await setActive('format');
+    if(profile!=='current')robRenderDailyResult(data,qc);else robRenderCurrentResult(rows,qc);
+    await mark('format',true);
+    await setActive('qc');await mark('qc',qc.ok);
+    await setActive('excel');await mark('excel',true);
+    if(profile!=='current'){await setActive('pdf');await mark('pdf',true)}
+    toast(qc.ok?'✅ Report robot selesai.':'⚠ Report selesai dengan catatan validasi.');
+  }catch(e){
+    const cur=robStepDefs.find(s=>status[s.k]===undefined);
+    if(cur)status[cur.k]='fail';
+    robRenderSteps(null,status);
+    $('robResultWrap').innerHTML=`<div class="robotQC fail">❌ ROBOT GAGAL: ${esc(e.message||e)}</div>`;
+    toast('❌ Robot gagal: '+(e.message||e));
+  }finally{btn.disabled=false}
+}
+function robToggleFields(){
+  const p=$('robProfile').value,cfg=ROBOT_PROFILES[p];
+  $('robDateField').style.display='none';
+  $('robTypeField').style.display=cfg.needsType?'':'none';
+  if($('robDate')){$('robDate').value=GDR.to||localISO();$('robDate').disabled=true}
+}
+function robInit(){
+  if($('robDate')&&!$('robDate').value)$('robDate').value=GDR.to||localISO();
+  robToggleFields();
+  $('robProfile').addEventListener('change',robToggleFields);
+  $('robGenBtn').addEventListener('click',robGenerate);
+}
+robInit();
+})();
+</script>
+<script>
+async function refreshAll(){const b=document.getElementById('refreshAllBtn');if(b)b.disabled=true;try{toast('⏳ Refresh data berjalan paralel...');const jobs=[syncMasterCache(),refreshAuth(),loadGates(),dash(),commandCenter(),current(),alerts(),exceptions(),audit()];await Promise.allSettled(jobs);if(lastReport)try{await report()}catch(e){console.warn(e)}toast('✅ Refresh data selesai')}catch(e){toast('❌ '+e.message)}finally{if(b)b.disabled=false}}
+document.getElementById('refreshAllBtn')?.addEventListener('click',refreshAll);
+document.getElementById('masterRefreshBtn')?.addEventListener('click',()=>{try{syncMasterCache()}catch(e){}});
+</script>
+<script>
+function reportTotalText_(rows){const n=rows.length,out=rows.filter(x=>/OUT/i.test(x.status||'')&&!/INSIDE/i.test(x.status||'')).length,carry=rows.filter(x=>x.carryover).length;return 'TOTAL: '+n+' DATA • '+out+' SUDAH KELUAR • '+(n-out)+' MASIH DI DALAM'+(carry?' ('+carry+' menginap dari hari sebelumnya)':'')}
+(function(){
+const LBL={currentList:'KENDARAAN DI DALAM',reportTable:'DATA',auditList:'RIWAYAT',alertList:'ALERT',authTable:'OTORISASI',exceptionList:'EXCEPTION',gateStatus:'GATE'};
+function num(t){
+ if(t.dataset.nn)return;t.dataset.nn='1';
+ const rows=[...t.rows],hdr=rows.filter(r=>r.querySelector('th')),data=rows.filter(r=>!r.querySelector('th'));
+ if(!data.length||(data.length===1&&data[0].cells.length===1&&data[0].cells[0].colSpan>1))return;
+ const heads=hdr[0]?[...hdr[0].cells].map(c=>c.textContent.trim().toLowerCase()):[];
+ const st=heads.indexOf('status'),ket=heads.indexOf('keterangan'),sc=heads[heads.length-1]==='jumlah'?heads.length-1:-1;
+ let n=0,out=0,carry=0,sum=0;
+ data.forEach(r=>{
+  if(r.cells.length===1&&r.cells[0].colSpan>1){r.cells[0].colSpan++;return}
+  n++;
+  if(st>=0&&/OUT/i.test(r.cells[st]?.textContent||''))out++;
+  if(ket>=0&&/Menginap/i.test(r.cells[ket]?.textContent||''))carry++;
+  if(sc>=0)sum+=Number(r.cells[sc]?.textContent)||0;
+  const td=document.createElement('td');td.textContent=n;td.style.cssText='text-align:center;font-weight:900';r.insertBefore(td,r.firstChild)
+ });
+ hdr.forEach(r=>{const th=document.createElement('th');th.textContent='No';r.insertBefore(th,r.firstChild)});
+ const w=t.closest('[id]'),lb=(w&&LBL[w.id])||'DATA',cols=(hdr[0]||data[0]).cells.length;
+ let txt='TOTAL: '+n+' '+lb;
+ if(sc>=0)txt+=' • JUMLAH: '+sum;
+ else if(st>=0)txt+=' • '+out+' SUDAH KELUAR • '+(n-out)+' MASIH DI DALAM';
+ else if(ket>=0&&lb==='KENDARAAN DI DALAM')txt+=' • '+carry+' MENGINAP DARI HARI SEBELUMNYA • '+(n-carry)+' MASUK HARI INI';
+ const tr=t.insertRow(-1),td=tr.insertCell();td.colSpan=cols;td.style.cssText='font-weight:900;background:#eaf1fb;color:#1b538b';td.textContent=txt;
+}
+let q=0;const run=()=>{q=0;document.querySelectorAll('table.table:not([data-nn])').forEach(t=>{try{num(t)}catch(e){console.warn(e)}})};
+new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.body,{childList:true,subtree:true});run();
+})();
+</script>
+</body></html>
