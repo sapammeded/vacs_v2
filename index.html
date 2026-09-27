@@ -427,7 +427,7 @@ async function gateAccess(act){
         if(sr.status==='SYNCED'){r.status='SYNCED';r.message=`${act} BERHASIL DISIMPAN KE SERVER`}
         else if(sr.status==='FAILED'){
           if(sr.cleared){r.status='REJECTED';r.message='DITOLAK SERVER • TIDAK MASUK LOG: '+(sr.message||'')}
-          else{r.status='QUEUED';r.message=`${act} TERSIMPAN \u2022 AKAN DICOBA LAGI OTOMATIS`}
+          else{r.status='QUEUED';r.message=`${act} TERSIMPAN \u2022 GAGAL: ${sr.message||'unknown'} \u2022 AKAN DICOBA LAGI OTOMATIS`}
         }
       });
     }else{
