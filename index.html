@@ -161,6 +161,30 @@ async function health(){
 // Range-aware chart: 1 hari = per jam; lebih dari 1 hari = per tanggal.
 // Normalisasi tanggal harus menerima data backend seperti:
 // 2026-09-19, 19/09/2026, dan Sabtu,19/09/2026.
+function fmtTime(v){if(!v)return'';const s=String(v);const m=s.match(/(\d{2}):(\d{2})(:\d{2})?/);if(m)return m[1]+':'+m[2];const d=new Date(v);if(!isNaN(d))return d.toTimeString().slice(0,5);return s}
+function isoToLong(v){if(!v)return'';const d=new Date(v+'T00:00:00');if(isNaN(d))return v;const bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];return d.getDate()+' '+bulan[d.getMonth()]+' '+d.getFullYear()}
+function makeEventId(){const u=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16)});return'EVT-'+u}
+function renderHourlyChart(hourly,opts){
+  opts=opts||{};
+  const data=Array.from({length:24},(_,hr)=>{const f=(hourly||[]).find(x=>Number(x.hour)===hr);return{hour:hr,in:Number((f&&f.in)||0),out:Number((f&&f.out)||0)}});
+  const w=760,h=270,padL=38,padR=12,padT=32,padB=42;
+  const chartW=w-padL-padR,chartH=h-padT-padB,barsW=chartW/24,bw=Math.max(2,Math.min(10,(barsW-5)/2));
+  const maxVal=Math.max(1,...data.map(x=>Math.max(x.in,x.out)));
+  const totalIn=data.reduce((a,x)=>a+x.in,0),totalOut=data.reduce((a,x)=>a+x.out,0);
+  const scale=v=>chartH*(v/maxVal);
+  let grid='',steps=4;
+  for(let i=0;i<=steps;i++){const gy=padT+chartH-(chartH*i/steps),val=Math.round(maxVal*i/steps);grid+=`<line x1="${padL}" y1="${gy.toFixed(1)}" x2="${w-padR}" y2="${gy.toFixed(1)}" stroke="#e2e8f0" stroke-width="1"/><text x="${padL-5}" y="${(gy+3).toFixed(1)}" font-size="9" text-anchor="end" fill="#94a3b8">${val}</text>`}
+  let bars='';
+  data.forEach((x,i)=>{
+    const bx=padL+i*barsW+(barsW-2*bw-2)/2,inH=scale(x.in),outH=scale(x.out);
+    bars+=`<rect x="${bx.toFixed(1)}" y="${(padT+chartH-inH).toFixed(1)}" width="${bw.toFixed(1)}" height="${inH.toFixed(1)}" fill="#16a34a"><title>Jam ${x.hour} MASUK ${x.in}</title></rect>`;
+    bars+=`<rect x="${(bx+bw+2).toFixed(1)}" y="${(padT+chartH-outH).toFixed(1)}" width="${bw.toFixed(1)}" height="${outH.toFixed(1)}" fill="#dc2626"><title>Jam ${x.hour} KELUAR ${x.out}</title></rect>`;
+    if(x.hour%3===0)bars+=`<text x="${(bx+bw+1).toFixed(1)}" y="${h-12}" font-size="9" text-anchor="middle" fill="#64748b">${x.hour}</text>`;
+  });
+  const title=opts.title?`<text x="${padL}" y="15" font-size="11" font-weight="700" fill="#1b538b">GRAFIK JAM MASUK/KELUAR • ${esc(opts.title)}</text>`:'';
+  const totalTxt=`<text x="${w-padR}" y="15" font-size="10" font-weight="700" text-anchor="end" fill="#0f172a">IN: ${totalIn} • OUT: ${totalOut}</text>`;
+  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:290px;background:#ffffff">${title}${totalTxt}${grid}<line x1="${padL}" y1="${(padT+chartH).toFixed(1)}" x2="${w-padR}" y2="${(padT+chartH).toFixed(1)}" stroke="#94a3b8"/>${bars}</svg><div style="font-size:11px;color:#64748b;margin-top:4px"><span style="color:#16a34a">■</span> Masuk &nbsp; <span style="color:#dc2626">■</span> Keluar &nbsp;&nbsp; <i>Sumbu X = JAM</i></div>`;
+}
 function chartDateKey(v){
   const s=String(v??'').trim();
   if(!s)return '';
@@ -214,6 +238,25 @@ function renderRangeChart(rows,from,to,opts){
   const title=opts.title?`<text x="${padL}" y="15" font-size="11" font-weight="700" fill="#1b538b">GRAFIK HARIAN MASUK/KELUAR • ${esc(opts.title)}</text>`:'';
   const totalTxt=`<text x="${w-padR}" y="15" font-size="10" font-weight="700" text-anchor="end" fill="#0f172a">IN: ${totalIn} • OUT: ${totalOut}</text>`;
   return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:290px;background:#ffffff">${title}${totalTxt}${grid}<line x1="${padL}" y1="${(padT+chartH).toFixed(1)}" x2="${w-padR}" y2="${(padT+chartH).toFixed(1)}" stroke="#94a3b8"/>${bars}</svg><div style="font-size:11px;color:#64748b;margin-top:4px"><span style="color:#16a34a">■</span> Masuk &nbsp; <span style="color:#dc2626">■</span> Keluar &nbsp;&nbsp; <i>Sumbu X = TANGGAL</i></div>`;
+}
+async function dash(){
+  try{
+    const date=($('dashDate')&&$('dashDate').value)||localISO();
+    const type=($('dashType')&&$('dashType').value)||'ALL';
+    const r=await call({action:'dashboard',date,type},60000);
+    if(!r.ok)throw Error(r.message||'Dashboard gagal dimuat.');
+    const s=(r.data&&r.data.summary)||{};
+    if($('todayIn'))$('todayIn').textContent=s.totalIn??0;
+    if($('todayOut'))$('todayOut').textContent=s.totalOut??0;
+    if($('inside'))$('inside').textContent=s.totalInside??0;
+    if($('carryoverInside'))$('carryoverInside').textContent=s.carryoverInside??0;
+    if($('carsIn'))$('carsIn').textContent=s.cars??0;
+    if($('motorcyclesIn'))$('motorcyclesIn').textContent=s.motorcycles??0;
+    return r.data;
+  }catch(e){
+    console.debug('[VACS] dash() failed',e);
+    return null;
+  }
 }
 async function commandCenter(){try{gdrEnsureValid();if($('ccFrom'))$('ccFrom').value=GDR.from;if($('ccTo'))$('ccTo').value=GDR.to;const type=$('ccType').value||'ALL';const live=await call({action:'commandCenter',date:GDR.to,type},90000);if(!live.ok)throw Error(live.message||'Command Center gagal dimuat.');const d=live.data||{},ss=d.summary||{};const box=$('ccVehicleSummary');const groups=d.insideByEntryDate||[];if(box){const todayIn=Number(ss.totalIn||0),todayOut=Number(ss.totalOut||0),inside=Number(ss.totalInside||0),cars=Number(ss.cars||0),motorcycles=Number(ss.motorcycles||0);const oldGroups=groups.filter(g=>g.date!==GDR.to);const oldCount=oldGroups.reduce((a,g)=>a+Number(g.count||0),0);const todayGroup=groups.find(g=>g.date===GDR.to);const todayStill=Number(todayGroup?.count||0);const groupHtml=groups.length?groups.map(g=>{const rows=g.rows||[];return `<details class="insideHistory" ${g.date===GDR.to?'open':''}><summary><span><b>${esc(g.date===GDR.to?'HARI INI':('MASIH DARI '+hariTanggal(g.date)))}</b><small>${esc(g.date)}</small></span><strong>${Number(g.count||0)} kendaraan</strong></summary><div class="insideHistoryRows">${rows.length?rows.map(x=>`<div class="insideVehicle"><b>${esc(x.plate||'—')}</b><span>${esc(x.vehicleType||'Kendaraan')} • ${esc(x.name||'Nama belum diisi')}</span><small>Masuk: ${esc(hariTanggal(x.inDate||g.date))} ${esc(x.inTime||'')}</small></div>`).join(''):'<div class="hint">Tidak ada detail kendaraan.</div>'}</div></details>`}).join(''):'<div class="empty">Tidak ada kendaraan yang masih di dalam.</div>';box.innerHTML=`<div class="vehicleSummaryHead"><div><div class="label">KONDISI SEKARANG</div><div class="insideBig">${inside}<span> kendaraan masih di dalam</span></div></div></div><div class="cc"><div class="stat"><b>${todayIn}</b><span>IN HARI INI</span></div><div class="stat"><b>${todayOut}</b><span>OUT HARI INI</span></div><div class="stat"><b>${todayStill}</b><span>DARI IN HARI INI</span></div><div class="stat"><b>${oldCount}</b><span>DARI TANGGAL SEBELUMNYA</span></div><div class="stat"><b>${cars}</b><span>MOBIL IN</span></div><div class="stat"><b>${motorcycles}</b><span>MOTOR IN</span></div></div><div class="insideExplanation"><b>Penjelasan:</b> ${todayStill} kendaraan berasal dari IN hari ini dan ${oldCount} kendaraan sudah berada di dalam dari tanggal sebelumnya. Jadi total yang masih berada di dalam sekarang adalah <b>${inside} kendaraan</b>.</div><div class="label" style="margin-top:14px">RIWAYAT KENDARAAN YANG MASIH DI DALAM</div><div class="hint">Daftar ini tidak dibatasi tahun. Kendaraan dari 2025 atau tahun sebelumnya tetap muncul selama belum tercatat OUT.</div><div class="insideHistoryList">${groupHtml}</div>`}if($('ccHourlyChart')){
   try{
