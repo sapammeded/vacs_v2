@@ -660,15 +660,36 @@ async function svgToPng_(svgEl,scale){
   scale=scale||10;
   const vb=svgEl.viewBox&&svgEl.viewBox.baseVal;
   const w=(vb&&vb.width)||760,h=(vb&&vb.height)||240;
-  const xml=new XMLSerializer().serializeToString(svgEl);
+
+  // HD export: force the SVG itself to the final raster dimensions before decoding.
+  // Without explicit width/height, browsers may rasterize a viewBox-only SVG at a
+  // small intrinsic size first, then enlarge it, which causes blur when zooming PDF/Excel.
+  scale=Math.max(2,Math.min(scale,Math.sqrt(60e6/(w*h)),16000/Math.max(w,h)));
+  const pxW=Math.round(w*scale),pxH=Math.round(h*scale);
+
+  const clone=svgEl.cloneNode(true);
+  clone.setAttribute('width',String(pxW));
+  clone.setAttribute('height',String(pxH));
+  clone.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  clone.setAttribute('preserveAspectRatio','xMidYMid meet');
+  clone.removeAttribute('style');
+
+  const xml=new XMLSerializer().serializeToString(clone);
   const url='data:image/svg+xml;charset=utf-8;base64,'+btoa(unescape(encodeURIComponent(xml)));
   const img=new Image();
+  img.width=pxW;img.height=pxH;
   await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});
-  scale=Math.max(2,Math.min(scale,Math.sqrt(14e6/(w*h)),16000/Math.max(w,h)));
-  const cv=document.createElement('canvas');cv.width=Math.round(w*scale);cv.height=Math.round(h*scale);
-  const ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.fillStyle='#ffffff';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.drawImage(img,0,0,cv.width,cv.height);
-  return{dataUrl:cv.toDataURL('image/png',1.0),w,h};
+
+  const cv=document.createElement('canvas');
+  cv.width=pxW;cv.height=pxH;
+  const ctx=cv.getContext('2d');
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  ctx.fillStyle='#ffffff';
+  ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.drawImage(img,0,0,pxW,pxH);
+
+  return{dataUrl:cv.toDataURL('image/png',1.0),w,h,pxW,pxH};
 }
 async function printReport(){if(!lastReport)return toast('Generate report dulu.');try{const C=window.jspdf?.jsPDF;if(!C)throw Error('PDF library belum siap.');const doc=new C({orientation:'landscape',unit:'mm',format:'a4'});doc.setFontSize(14);doc.text('VACS — ACCESS REPORT',14,12);doc.setFontSize(8);doc.text(String(lastReport.rangeFrom||lastReport.reportDate||'')+' → '+String(lastReport.rangeTo||lastReport.reportLogDate||lastReport.reportDate||'')+' • TYPE: '+(lastReport.filterType||'ALL'),14,18);const rows=(lastReport.rows||[]).map((x,i)=>[i+1,x.name,x.plate,x.division,x.vehicleType||'',x.accessType||x.type||'',x.model,x.color,x.inTime,hariTanggal(x.inDate||x.date),x.outTime,x.outDate?hariTanggal(x.outDate):'',x.status,x.notes]);const head=['No','Nama','Nomor Kendaraan','Bagian/Divisi','Jenis Kendaraan','Access Type','Model','Warna','IN','Tanggal IN','OUT','Tanggal OUT','Status','Keterangan'];doc.autoTable({startY:23,head:[head],body:rows,foot:rows.length?[[{content:reportTotalText_(lastReport.rows||[]),colSpan:14,styles:{halign:'left',fontStyle:'bold',fillColor:[234,241,251],textColor:[27,83,139]}}]]:undefined,showFoot:'lastPage',columnStyles:{0:{halign:'center',cellWidth:7,fontStyle:'bold'},1:{cellWidth:22},2:{cellWidth:20},3:{cellWidth:20},4:{cellWidth:14},5:{cellWidth:13},6:{cellWidth:17},7:{cellWidth:13},8:{cellWidth:11,halign:'center'},9:{cellWidth:24},10:{cellWidth:11,halign:'center'},11:{cellWidth:24},12:{cellWidth:11,halign:'center'},13:{cellWidth:62}},theme:'grid',showHead:'everyPage',margin:{left:14,right:14,bottom:14},alternateRowStyles:{fillColor:[245,248,252]},styles:{fontSize:5.7,cellPadding:1.3,overflow:'linebreak',valign:'top',lineColor:[185,196,206],lineWidth:0.1},headStyles:{fillColor:[27,83,139],textColor:255,halign:'center',valign:'middle'}});let y=doc.lastAutoTable.finalY+7;doc.setFontSize(9);doc.text('RINGKASAN KENDARAAN',14,y);y+=5;const ps=lastReport.summary||{};const pbody=[['IN HARI/PERIODE',String(ps.totalIn||0)],['OUT HARI/PERIODE',String(ps.totalOut||0)],['STILL INSIDE',String(ps.totalInside||0)],['DARI HARI SEBELUMNYA',String(ps.carryoverInside||0)],['MOBIL IN',String(ps.cars||0)],['MOTOR IN',String(ps.motorcycles||0)]];doc.autoTable({startY:y,head:[['Keterangan','Jumlah']],body:pbody,theme:'grid',styles:{fontSize:7,cellPadding:1.5},headStyles:{fillColor:[27,83,139],textColor:255}});y=doc.lastAutoTable.finalY+6;const carryPdf=lastReport.carryoverRows||[];doc.text('KENDARAAN DARI HARI SEBELUMNYA',14,y);y+=4;doc.autoTable({startY:y,head:[['Kendaraan','Jenis','Masuk']],body:carryPdf.length?carryPdf.map(x=>[x.plate||'',x.vehicleType||'',(x.inDate||'')+' '+(x.inTime||'')]):[['—','Tidak ada','']],theme:'grid',styles:{fontSize:7,cellPadding:1.5},headStyles:{fillColor:[27,83,139],textColor:255}});
   const svgEl=document.querySelector('#reportChart svg');
@@ -678,7 +699,7 @@ async function printReport(){if(!lastReport)return toast('Generate report dulu.'
     doc.setFontSize(8);doc.text(hariTanggal(lastReport.reportLogDate||lastReport.reportDate)+' • TYPE: '+(lastReport.filterType||'ALL'),14,20);
     const {dataUrl,w,h}=await svgToPng_(svgEl,10);
     const imgW=270,imgH=imgW*(h/w);
-    doc.addImage(dataUrl,'PNG',13.5,26,imgW,imgH,undefined,'FAST');
+    doc.addImage(dataUrl,'PNG',13.5,26,imgW,imgH,undefined,'SLOW');
   }
   {const np=doc.internal.getNumberOfPages(),pw=doc.internal.pageSize.getWidth(),ph=doc.internal.pageSize.getHeight();for(let i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7);doc.setTextColor(104,118,139);doc.text('VACS — Vehicle Access Control System',14,ph-6);doc.text('Dicetak: '+new Date().toLocaleString('id-ID'),pw/2,ph-6,{align:'center'});doc.text('Halaman '+i+' / '+np,pw-14,ph-6,{align:'right'})}doc.setTextColor(0,0,0)}
   const blob=doc.output('blob');downloadBlob(blob,'VACS_'+fileDateName(lastReport.reportLogDate||lastReport.reportDate)+'.pdf','application/pdf');toast('✅ PDF berhasil disiapkan.')}catch(e){toast('❌ PDF gagal: '+e.message)}}
