@@ -80,7 +80,7 @@ function device(){
 }
 
 const GAS_API_ENDPOINTS=[
-  "https://script.google.com/macros/s/AKfycbzLL0MkyD8JqrCYibAZVptIKX2RKT7MsSop2ZqyH2MiSB8U3d_B8Eq_wnwgIYAOkJs5QA/exec"
+  "https://script.google.com/macros/s/AKfycbzPbd1ajF3_v_VStN5gQkd9a0XwCUwIX1raTqvZm5DAJgxGoaNRhuBXTpedzcu5602oWQ/exec"
 ],CREATED_BY="Mbah Pri",$=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 let activeApiBase='';
 try{activeApiBase=localStorage.getItem('vacsApiBase')||''}catch(e){}
@@ -90,6 +90,7 @@ let selected=null,lastReport=null,authCache=[];let serverOnline=false;
 const TYPES=['VISITOR','CONTRACTOR','VENDOR','EMPLOYEE','EMERGENCY VEHICLE','DELIVERY','TEMPORARY VEHICLE','VIP','STAFF','TENANT','SECURITY','SUPPORT PARTNER'];
 function accessTypeNorm(v){const t=String(v??'').trim().replace(/\s+/g,' ').toUpperCase();if(!t)return'VISITOR';if(t==='SP'||t==='SUPPORTPARTNER')return'SUPPORT PARTNER';return t}
 const IDB={name:'vacs_offline_v2',queue:'queue',master:'master',meta:'meta'};
+async function busy_(id,txt,fn){const b=typeof id==='string'?$(id):id;if(!b)return fn();if(b.dataset.busy==='1')return;b.dataset.busy='1';const o=b.textContent;b.disabled=true;b.textContent=txt;try{return await fn()}finally{b.disabled=false;b.textContent=o;delete b.dataset.busy}}
 function toast(t){const x=$('toast');x.textContent=t;x.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>x.classList.remove('show'),3500)}
 function apiJsonp_(base,p,t){return new Promise((res,rej)=>{const cb='vacs_'+Date.now()+'_'+Math.random().toString(36).slice(2),s=document.createElement('script');let done=0;const fin=(f,v)=>{if(done)return;done=1;delete window[cb];try{s.remove()}catch(e){};f(v)};window[cb]=d=>fin(res,d);s.onerror=()=>fin(rej,Error('JSONP network/CSP error'));s.src=base+'?'+new URLSearchParams({...p,callback:cb,_t:Date.now()});document.body.appendChild(s);setTimeout(()=>fin(rej,Error('JSONP timeout')),t)})}
 function apiFetch_(base,p,t){return new Promise((res,rej)=>{const ctrl=('AbortController'in window)?new AbortController():null;const timer=setTimeout(()=>{try{ctrl&&ctrl.abort()}catch(e){};fin(rej,Error('Fetch timeout'))},t);let done=0;const fin=(f,v)=>{if(done)return;done=1;clearTimeout(timer);f(v)};const url=base+'?'+new URLSearchParams({...p,_t:Date.now()});fetch(url,{method:'GET',signal:ctrl?ctrl.signal:undefined,credentials:'omit'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>fin(res,d)).catch(e=>fin(rej,e))})}
@@ -163,7 +164,9 @@ async function health(){
 // Range-aware chart: 1 hari = per jam; lebih dari 1 hari = per tanggal.
 // Normalisasi tanggal harus menerima data backend seperti:
 // 2026-09-19, 19/09/2026, dan Sabtu,19/09/2026.
-function fmtTime(v){if(!v)return'';const s=String(v);const m=s.match(/(\d{2}):(\d{2})(:\d{2})?/);if(m)return m[1]+':'+m[2];const d=new Date(v);if(!isNaN(d))return d.toTimeString().slice(0,5);return s}
+function wibParts_(v){const s=String(v??'').trim();if(!/^\d{4}-\d{2}-\d{2}T/.test(s)||!/(Z|[+-]\d{2}(:?\d{2})?)$/.test(s))return null;const d=new Date(s);if(isNaN(d))return null;const w=new Date(d.getTime()+7*3600000),p=n=>String(n).padStart(2,'0');return{date:w.getUTCFullYear()+'-'+p(w.getUTCMonth()+1)+'-'+p(w.getUTCDate()),time:p(w.getUTCHours())+':'+p(w.getUTCMinutes())+':'+p(w.getUTCSeconds())}}
+function fmtDT(v){const w=wibParts_(v);return w?w.date+' '+w.time:String(v??'')}
+function fmtTime(v){if(!v)return'';const w0=wibParts_(v);if(w0)return w0.time.slice(0,5);const s=String(v);const m=s.match(/(\d{2}):(\d{2})(:\d{2})?/);if(m)return m[1]+':'+m[2];const d=new Date(v);if(!isNaN(d))return d.toTimeString().slice(0,5);return s}
 function isoToLong(v){if(!v)return'';const d=new Date(v+'T00:00:00');if(isNaN(d))return v;const bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];return d.getDate()+' '+bulan[d.getMonth()]+' '+d.getFullYear()}
 function makeEventId(){const u=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16)});return u}
 function renderHourlyChart(hourly,opts){
@@ -190,6 +193,7 @@ function renderHourlyChart(hourly,opts){
 function chartDateKey(v){
   const s=String(v??'').trim();
   if(!s)return '';
+  const w0=wibParts_(s);if(w0)return w0.date;
   let m=s.match(/(\d{4})-(\d{2})-(\d{2})/);
   if(m)return `${m[1]}-${m[2]}-${m[3]}`;
   m=s.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
@@ -277,7 +281,7 @@ async function saveM(){
   const name=$('mName').value.trim(),plate=$('mPlate').value.trim();
   if(!name||!plate)return setResult('manualResult','Nama dan Nomor Kendaraan wajib diisi.','err');
   if(masterEditingPlate&&plate.toUpperCase()!==masterEditingPlate.toUpperCase())return setResult('manualResult','Nomor kendaraan dikunci saat mode edit. Gunakan BERSIHKAN untuk input kendaraan baru.','err');
-  const b=$('saveMasterBtn');b.disabled=true;
+  const b=$('saveMasterBtn');if(b.disabled)return;b.disabled=true;b.textContent='⏳ MENYIMPAN...';
   try{
     const r=await call({action:'registerVehicle',name,plate,division:$('mDiv').value.trim(),vehicleType:$('mType').value.trim(),accessType:selectedMasterAccessType()||'VISITOR',model:$('mModel').value.trim(),color:$('mColor').value.trim(),pin:adminPin_()});
     if(!r.ok)throw Error(r.message);
@@ -287,7 +291,7 @@ async function saveM(){
     await dash();
     if($('masterSearch')?.value.trim())await masterSearch();
   }catch(e){setResult('manualResult','❌ '+e.message,'err')}
-  finally{b.disabled=false}
+  finally{b.disabled=false;b.textContent=masterEditingPlate?'💾 SIMPAN PERUBAHAN':'💾 SIMPAN / UPDATE'}
 }
 async function masterSearch(){
   const q=$('masterSearch').value.trim();
@@ -322,7 +326,7 @@ function val(m,a){for(const n of a){const k=n.toLowerCase().replace(/[^a-z0-9]/g
 async function importM(){const f=$('fileInput').files[0];if(!f)return toast('Pilih Excel/CSV terlebih dahulu.');if(!window.XLSX)return toast('Library Excel belum siap. Refresh.');const b=$('importBtn');b.disabled=true;try{const pin=adminPin_();if(!pin)throw Error('PIN Admin wajib diisi.');const wb=XLSX.read(await f.arrayBuffer(),{type:'array'}),ws=wb.Sheets[wb.SheetNames[0]],raw=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false}),rows=raw.map(x=>{const m=mapHead(x);return{name:val(m,['nama','namapemilik','pemilik']),plate:val(m,['nomorkendaraan','nopolisi','nopol','nomorpolisi','plate','plat']),division:val(m,['bagian/divisi','bagian','divisi']),vehicleType:val(m,['jeniskendaraan','jeniskendaraan','jenis kendaraan','jenis','tipe']),accessType:val(m,['accesstype','access type','kategori akses','kategori']),model:val(m,['model']),color:val(m,['warnakendaraan','warna'])}}).filter(x=>x.plate);if(!rows.length)throw Error('Kolom Nomor Kendaraan tidak ditemukan.');let c=0,u=0;const CH=100;for(let i=0;i<rows.length;i+=CH){const r=await call({action:'importVehicles',rows:JSON.stringify(rows.slice(i,i+CH)),pin},90000);c+=r.data.created;u+=r.data.updated;b.textContent=`IMPORT ${Math.min(i+CH,rows.length)}/${rows.length}`}$('importResult').textContent=`✓ ${c} baru • ${u} diperbarui`;$('importResult').className='result show ok';dash()}catch(e){$('importResult').textContent='❌ '+e.message;$('importResult').className='result show err'}finally{b.disabled=false;b.textContent='📥 IMPORT / UPDATE MASTER'}}
 function template(){if(!window.XLSX)return toast('Library Excel belum siap.');const ws=XLSX.utils.aoa_to_sheet([['Nama','Nomor Kendaraan','Bagian/Divisi','Jenis Kendaraan','Model','Warna Kendaraan','Access Type']]);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'VEHICLES');XLSX.writeFile(wb,'VACS_VEHICLES_TEMPLATE.xlsx');toast('Template Excel dibuat.')}
 async function current(){try{const r=await call({action:'current'}),a=r.data||[];try{localStorage.setItem('vacsServerInside',JSON.stringify(a.map(x=>({plate:x.plate,name:x.name||'',inTime:x.inTime||'',date:x.date||''}))))}catch(e){};$('currentList').className=a.length?'tablewrap':'empty';$('currentList').innerHTML=a.length?`<table class="table"><tr><th>Nama</th><th>Nomor Kendaraan</th><th>Divisi</th><th>Access Type</th><th>Jam IN</th><th>Tanggal</th><th>Keterangan</th></tr>${a.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.plate)}</td><td>${esc(x.division)}</td><td>${esc(x.accessType||x.type||'')}</td><td>${esc(fmtTime(x.inTime))}</td><td>${esc(x.date)}</td><td>${esc(x.notes||'')}</td></tr>`).join('')}</table>`:'Tidak ada kendaraan di dalam.'}catch(e){$('currentList').textContent='❌ '+e.message}}
-async function audit(){try{const r=await call({action:'audit',q:$('auditSearch').value}),a=r.data.events||[];$('auditList').className=a.length?'tablewrap':'empty';$('auditList').innerHTML=a.length?`<table class="table"><tr><th>Timestamp</th><th>Created By</th><th>Action</th><th>Nomor Kendaraan</th><th>Nama</th><th>Result</th><th>Detail</th></tr>${a.map(x=>`<tr><td>${esc(fmtTime(x.timestamp))}</td><td>${esc(x.createdBy)}</td><td>${esc(x.action)}</td><td>${esc(x.plate)}</td><td>${esc(x.name)}</td><td>${esc(x.result)}</td><td>${esc(x.detail)}</td></tr>`).join('')}</table>`:'Tidak ada audit event.'}catch(e){$('auditList').textContent='❌ '+e.message}}
+async function audit(){try{const r=await call({action:'audit',q:$('auditSearch').value}),a=r.data.events||[];$('auditList').className=a.length?'tablewrap':'empty';$('auditList').innerHTML=a.length?`<table class="table"><tr><th>Timestamp</th><th>Created By</th><th>Action</th><th>Nomor Kendaraan</th><th>Nama</th><th>Result</th><th>Detail</th></tr>${a.map(x=>`<tr><td>${esc(fmtDT(x.timestamp))}</td><td>${esc(x.createdBy)}</td><td>${esc(x.action)}</td><td>${esc(x.plate)}</td><td>${esc(x.name)}</td><td>${esc(x.result)}</td><td>${esc(x.detail&&typeof x.detail==='object'?JSON.stringify(x.detail):x.detail)}</td></tr>`).join('')}</table>`:'Tidak ada audit event.'}catch(e){$('auditList').textContent='❌ '+e.message}}
 function adminPin_(){
  const existing=String($('adminPin')?.value||'').trim();
  if(existing)return existing;
@@ -352,9 +356,9 @@ function ensureAccessToken_(){
  });
  return __vacsTokenModalPromise;
 }
-async function backup(){const b=$('backupBtn');b.disabled=true;try{const r=await call({action:'backup',pin:adminPin_()},30000);if(!r.ok)throw Error(r.message);$('backupResult').textContent=`✓ Backup dibuat: ${r.data.name}`;$('backupResult').className='result show ok'}catch(e){$('backupResult').textContent='❌ '+e.message;$('backupResult').className='result show err'}finally{b.disabled=false}}
+async function backup(){return busy_('backupBtn','⏳ MEMPROSES...',async()=>{try{const r=await call({action:'backup',pin:adminPin_()},90000);if(!r.ok)throw Error(r.message);$('backupResult').textContent=`✓ Sync/backup selesai: ${r.data.name||r.data.spreadsheetId} • ${r.data.events||0} event`;$('backupResult').className='result show ok'}catch(e){$('backupResult').textContent='❌ '+e.message;$('backupResult').className='result show err'}})}
 function isoDateToLog(v){const s=String(v??'').trim();const m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?String(m[3]).padStart(2,'0')+'/'+String(m[2]).padStart(2,'0')+'/'+m[1]:s}
-function hariTanggal(v){const s=String(v??'').trim();let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);if(!m)return s;const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));const hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dt.getUTCDay()];return `${hari}, ${String(d).padStart(2,'0')} ${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][mo-1]} ${y}`}
+function hariTanggal(v){const s=isoDateToLog(String(v??'').trim());let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);if(!m)return s;const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));const hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dt.getUTCDay()];return `${hari}, ${String(d).padStart(2,'0')} ${['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][mo-1]} ${y}`}
 function fileDateName(v){const s=String(v??'').trim();let d,mo,y;let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);if(m){d=Number(m[1]);mo=Number(m[2]);y=Number(m[3])}else{m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(m){y=Number(m[1]);mo=Number(m[2]);d=Number(m[3])}else{const dt=new Date();y=dt.getFullYear();mo=dt.getMonth()+1;d=dt.getDate()}}const dt=new Date(Date.UTC(y,mo-1,d));const hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dt.getUTCDay()];return `${hari},_${String(d).padStart(2,'0')}_${String(mo).padStart(2,'0')}_${y}`}
 function renderDailyLineage_(lineage){
   const days=Array.isArray(lineage)?lineage:[];
@@ -425,6 +429,7 @@ async function gateAccess(act){
       results.forEach(r=>{
         const sr=byId[r.eventId];if(!sr)return;
         if(sr.status==='SYNCED'){r.status='SYNCED';r.message=`${act} BERHASIL DISIMPAN KE SERVER`}
+        else if(sr.status==='DENIED'||sr.status==='CONFLICT'){r.status='REJECTED';r.message='DITOLAK SERVER • '+(/DUPLICATE_IN|masih tercatat/i.test(sr.message||'')?'Kendaraan masih tercatat DI DALAM (DUPLICATE_IN)':(sr.message||'ditolak'))}
         else if(sr.status==='FAILED'){
           if(sr.cleared){r.status='REJECTED';r.message='DITOLAK SERVER • TIDAK MASUK LOG: '+(sr.message||'')}
           else{r.status='QUEUED';r.message=`${act} TERSIMPAN \u2022 GAGAL: ${sr.message||'unknown'} \u2022 AKAN DICOBA LAGI OTOMATIS`}
@@ -454,8 +459,9 @@ function mergeAccessTypeOptions(values){
 function initTypes(){const opts=TYPES.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')+'<option value="CUSTOM">CUSTOM</option>';if($('aType'))$('aType').innerHTML=opts;if($('mAccessType'))$('mAccessType').innerHTML=opts;mergeAccessTypeOptions([]);updateCustomAccessUI()}
 function authValid(a){const now=new Date(),day=now.toLocaleDateString('en-CA',{timeZone:'Asia/Jakarta'}),t=now.toLocaleTimeString('en-GB',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',hour12:false});return a.status==='ACTIVE'&&(!a.validFromDate||day>=String(a.validFromDate).slice(0,10))&&(!a.validUntilDate||day<=String(a.validUntilDate).slice(0,10))&&(!a.timeFrom||!a.timeUntil||((a.timeFrom<=a.timeUntil)?t>=a.timeFrom&&t<=a.timeUntil:(t>=a.timeFrom||t<=a.timeUntil)))}
 async function refreshAuth(){try{const d=await call({action:'authorizations'});authCache=d.data?.found||[];localStorage.setItem('vacsAuthCache',JSON.stringify(authCache));renderAuth();setResult('authResult',`✓ ${authCache.length} authorization tersedia; cache offline diperbarui.`)}catch(e){authCache=JSON.parse(localStorage.getItem('vacsAuthCache')||'[]');renderAuth();setResult('authResult','OFFLINE — memakai cache authorization lokal.','warn')}}
-function renderAuth(){const a=authCache;$('authTable').className=a.length?'tablewrap':'empty';$('authTable').innerHTML=a.length?'<table class="table"><tr><th>Auth ID</th><th>Person</th><th>Type</th><th>Company</th><th>Plate</th><th>Purpose</th><th>Host</th><th>Gate</th><th>Validity</th><th>Status</th></tr>'+a.map(x=>`<tr><td>${esc(x.authId)}</td><td>${esc(x.personName)}</td><td>${esc(accessTypeNorm(x.type))}</td><td>${esc(x.company)}</td><td>${esc(x.plate)}</td><td>${esc(x.purpose)}</td><td>${esc(x.host)}</td><td>${esc(x.gateAllowed)}</td><td>${esc(x.validFromDate)} → ${esc(x.validUntilDate)} ${esc(x.timeFrom)}-${esc(x.timeUntil)}</td><td>${esc(x.status)}</td></tr>`).join('')+'</table>':'Tidak ada authorization.'}
-async function createAuth(){try{const type=$('aType').value==='CUSTOM'?String($('aCustomType')?.value||'').trim():$('aType').value;if(!type)throw Error('Custom Access Type wajib diisi.');const d=await call({action:'createAuthorization',pin:adminPin_(),personName:$('aPerson').value,type,company:$('aCompany').value,plate:$('aPlate').value,purpose:$('aPurpose').value,host:$('aHost').value,gateAllowed:$('aGate').value,validFromDate:$('aFrom').value,validUntilDate:$('aUntil').value,timeFrom:$('aTimeFrom').value,timeUntil:$('aTimeUntil').value});setResult('authResult','✓ '+d.data.message);await refreshAuth()}catch(e){setResult('authResult','❌ '+e.message,'err')}}
+function renderAuth(){const a=authCache;$('authTable').className=a.length?'tablewrap':'empty';$('authTable').innerHTML=a.length?'<table class="table"><tr><th>Auth ID</th><th>Person</th><th>Type</th><th>Company</th><th>Plate</th><th>Purpose</th><th>Host</th><th>Gate</th><th>Validity</th><th>Status</th></tr>'+a.map(x=>`<tr><td>${esc(x.authId)}</td><td>${esc(x.personName)}</td><td>${esc(accessTypeNorm(x.type))}</td><td>${esc(x.company)}</td><td>${esc(x.plate)}</td><td>${esc(x.purpose)}</td><td>${esc(x.host)}</td><td>${esc(x.gateLabel||x.gateAllowed)}</td><td>${esc(x.validFromDate)} → ${esc(x.validUntilDate)} ${esc(x.timeFrom)}-${esc(x.timeUntil)}</td><td>${esc(x.status)}</td></tr>`).join('')+'</table>':'Tidak ada authorization.'}
+async function createAuth(){return busy_('createAuth','⏳ MENYIMPAN...',createAuth_)}
+async function createAuth_(){try{const type=$('aType').value==='CUSTOM'?String($('aCustomType')?.value||'').trim():$('aType').value;if(!type)throw Error('Custom Access Type wajib diisi.');const d=await call({action:'createAuthorization',pin:adminPin_(),personName:$('aPerson').value,type,company:$('aCompany').value,plate:$('aPlate').value,purpose:$('aPurpose').value,host:$('aHost').value,gateAllowed:$('aGate').value,validFromDate:$('aFrom').value,validUntilDate:$('aUntil').value,timeFrom:$('aTimeFrom').value,timeUntil:$('aTimeUntil').value});setResult('authResult','✓ '+d.data.message);await refreshAuth()}catch(e){setResult('authResult','❌ '+e.message,'err')}}
 function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(IDB.name,4);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains(IDB.queue))db.createObjectStore(IDB.queue,{keyPath:'eventId'});if(!db.objectStoreNames.contains(IDB.master))db.createObjectStore(IDB.master,{keyPath:'plate'});if(!db.objectStoreNames.contains(IDB.meta))db.createObjectStore(IDB.meta,{keyPath:'key'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function queueAdd(x){x={...x,queuedAt:Number(x.queuedAt||Date.now())};const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(IDB.queue,'readwrite');tx.objectStore(IDB.queue).put(x);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function queueAll(){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(IDB.queue,'readonly'),r=tx.objectStore(IDB.queue).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
@@ -521,7 +527,7 @@ async function offlineAuth(act){const person=$('xPerson').value.trim(),plate=$('
 function showConflict(item,msg){const plate=item?.payload?.plate||'kendaraan';const box=document.createElement('div');box.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';box.innerHTML=`<div style="max-width:520px;width:100%;background:#fff;border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><h2 style="margin:0 0 12px;color:#b91c1c">⚠️ TRANSAKSI TIDAK DIBUAT</h2><p style="font-weight:700;font-size:18px">Kendaraan ${esc(plate)} tidak diproses dari transaksi offline ini.</p><p>Server menolak transaksi karena kendaraan sudah memiliki transaksi yang lebih dahulu / status akses tidak memungkinkan.</p><p style="color:#64748b;font-size:13px">Detail server: ${esc(msg||'Transaksi ditolak')}</p><button class="btn blue" style="width:100%" onclick="this.closest('div[style*=fixed]').remove()">OK</button></div>`;document.body.appendChild(box)}
 let __vacsSyncInFlight=null;
 async function syncQueue(){
- if(__vacsSyncInFlight)return __vacsSyncInFlight;
+ while(__vacsSyncInFlight){try{await __vacsSyncInFlight}catch(e){}}
  __vacsSyncInFlight=(async()=>{
   const items=(await queueAll()).slice().sort((a,b)=>String(a.localTimestamp||'').localeCompare(String(b.localTimestamp||''))||Number(a.queuedAt||0)-Number(b.queuedAt||0)||String(a.eventId||'').localeCompare(String(b.eventId||'')));
   if(!items.length)return[];
@@ -543,6 +549,7 @@ async function syncQueue(){
    try{
     const d=await call({action:'syncQueue',events:JSON.stringify(batch),accessToken:token},10000);
     if(d&&d.ok===false)throw Error(d.message||'Sync ditolak server');
+    online(true);
     await applyBatchResults(batch,Array.isArray(d.data?.results)?d.data.results:[]);
    }catch(e){
     // Unknown commit state: verify repeatedly, never blind retry the mutation.
@@ -568,8 +575,8 @@ async function syncQueue(){
  try{return await __vacsSyncInFlight}finally{__vacsSyncInFlight=null}
 }
 function renderCurrent(a){$('currentList').className=a.length?'tablewrap':'empty';$('currentList').innerHTML=a.length?'<table class="table"><tr><th>Nama</th><th>Plate</th><th>Divisi</th><th>IN</th><th>Tanggal</th><th>Keterangan</th></tr>'+a.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.plate)}</td><td>${esc(x.division)}</td><td>${esc(fmtTime(x.inTime))}</td><td>${esc(x.date)}</td><td>${esc(x.notes||'')}</td></tr>`).join('')+'</table>':'Tidak ada kendaraan di dalam.'}
-async function exceptions(){try{const d=await call({action:'exceptions',q:$('exceptionSearch').value});const a=d.data?.events||[];$('exceptionList').className=a.length?'tablewrap':'empty';$('exceptionList').innerHTML=a.length?'<table class="table"><tr><th>Timestamp</th><th>Event</th><th>Person</th><th>Plate</th><th>Type</th><th>Gate</th><th>Reason</th><th>Device</th></tr>'+a.map(x=>`<tr><td>${esc(fmtTime(x.timestamp))}</td><td>${esc(x.eventId)}</td><td>${esc(x.personName)}</td><td>${esc(x.plate)}</td><td>${esc(x.type)}</td><td>${esc(x.gateName)}</td><td><span class="pill pred">${esc(x.reason)}</span></td><td>${esc(x.device)}</td></tr>`).join('')+'</table>':'Tidak ada denied event.'}catch(e){toast(e.message)}}
-async function alerts(){try{const d=await call({action:'alerts'}),a=d.data?.alerts||[];$('alertList').className=a.length?'tablewrap':'empty';$('alertList').innerHTML=a.length?'<table class="table"><tr><th>Alert</th><th>Type</th><th>Severity</th><th>Time</th><th>Person</th><th>Plate</th><th>Status</th><th>Action</th></tr>'+a.map(x=>`<tr><td>${esc(x.alertId)}</td><td>${esc(x.type)}</td><td>${esc(x.severity)}</td><td>${esc(fmtTime(x.timestamp))}</td><td>${esc(x.person)}</td><td>${esc(x.plate)}</td><td>${esc(x.status)}</td><td><button class="btn" onclick="ack('${esc(x.alertId)}')">ACK</button> <button class="btn" onclick="resolveA('${esc(x.alertId)}')">RESOLVE</button></td></tr>`).join('')+'</table>':'Tidak ada alert.'}catch(e){toast(e.message)}}
+async function exceptions(){try{const d=await call({action:'exceptions',q:$('exceptionSearch').value});const a=d.data?.events||[];$('exceptionList').className=a.length?'tablewrap':'empty';$('exceptionList').innerHTML=a.length?'<table class="table"><tr><th>Timestamp</th><th>Event</th><th>Person</th><th>Plate</th><th>Type</th><th>Gate</th><th>Reason</th><th>Device</th></tr>'+a.map(x=>`<tr><td>${esc(fmtDT(x.timestamp))}</td><td>${esc(x.eventId)}</td><td>${esc(x.personName)}</td><td>${esc(x.plate)}</td><td>${esc(x.type)}</td><td>${esc(x.gateName)}</td><td><span class="pill pred">${esc(x.reason)}</span></td><td>${esc(x.device)}</td></tr>`).join('')+'</table>':'Tidak ada denied event.'}catch(e){toast(e.message)}}
+async function alerts(){try{const d=await call({action:'alerts'}),a=d.data?.alerts||[];$('alertList').className=a.length?'tablewrap':'empty';$('alertList').innerHTML=a.length?'<table class="table"><tr><th>Alert</th><th>Type</th><th>Severity</th><th>Time</th><th>Person</th><th>Plate</th><th>Status</th><th>Action</th></tr>'+a.map(x=>`<tr><td>${esc(x.alertId)}</td><td>${esc(x.type)}</td><td>${esc(x.severity)}</td><td>${esc(fmtDT(x.timestamp))}</td><td>${esc(x.person)}</td><td>${esc(x.plate)}</td><td>${esc(x.status)}</td><td><button class="btn" onclick="ack('${esc(x.alertId)}')">ACK</button> <button class="btn" onclick="resolveA('${esc(x.alertId)}')">RESOLVE</button></td></tr>`).join('')+'</table>':'Tidak ada alert.'}catch(e){toast(e.message)}}
 async function ack(id){try{await call({action:'ackAlert',alertId:id,pin:adminPin_()});alerts();commandCenter()}catch(e){toast(e.message)}}
 async function resolveA(id){try{await call({action:'resolveAlert',alertId:id,pin:adminPin_()});alerts();commandCenter()}catch(e){toast(e.message)}}
 async function exportReport(){if(!lastReport)return toast('Generate report dulu.');try{
@@ -681,14 +688,15 @@ btn&&btn.addEventListener('click',enterApp);
 })();
 function setResult(id,msg,cls){const el=$(id);if(!el)return;el.textContent=msg;el.className='result show '+(cls||'ok')}
 function switchTab(tab){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===tab));const g=$('gdrBar');if(g)g.style.display=tab==='gate'?'none':'';if(tab==='command'&&!switchTab.__cc){switchTab.__cc=1;commandCenter()}}
-async function deleteVehicle(){const plate=$('delPlate').value.trim(),pin=$('adminPin').value.trim();if(!plate)return setResult('deleteResult','Nomor kendaraan wajib diisi.','err');if(!pin)return setResult('deleteResult','PIN Admin wajib diisi.','err');try{const r=await call({action:'deleteVehicle',plate,pin});if(!r.ok)throw Error(r.message);setResult('deleteResult','✓ '+(r.data?.message||'Kendaraan dihapus dari MASTER.'),'ok');$('delPlate').value='';$('adminPin').value='';dash()}catch(e){setResult('deleteResult','❌ '+e.message,'err')}}
+async function deleteVehicle(){return busy_('deleteVehicleBtn','⏳ MEMPROSES...',deleteVehicle_)}
+async function deleteVehicle_(){const plate=$('delPlate').value.trim(),pin=$('adminPin').value.trim();if(!plate)return setResult('deleteResult','Nomor kendaraan wajib diisi.','err');if(!pin)return setResult('deleteResult','PIN Admin wajib diisi.','err');try{const r=await call({action:'deleteVehicle',plate,pin});if(!r.ok)throw Error(r.message);setResult('deleteResult','✓ '+(r.data?.message||'Kendaraan dihapus dari MASTER.'),'ok');$('delPlate').value='';$('adminPin').value='';dash()}catch(e){setResult('deleteResult','❌ '+e.message,'err')}}
 async function deleteAccessEventsRange(){
   const fromDate=$('delEvFrom').value,toDate=$('delEvTo').value||fromDate,pin=$('delEvPin').value.trim();
   if(!fromDate)return setResult('deleteEventsResult','Tanggal awal wajib diisi.','err');
   if(!pin)return setResult('deleteEventsResult','PIN Admin wajib diisi.','err');
   const label=fromDate===toDate?fromDate:(fromDate+' s/d '+toDate);
   if(!confirm('Yakin hapus PERMANEN semua data ACCESS_EVENTS pada '+label+'?\n\nAksi ini tidak bisa dibatalkan.'))return;
-  const b=$('deleteAccessEventsBtn');b.disabled=true;
+  const b=$('deleteAccessEventsBtn');if(b.disabled)return;const o1=b.textContent;b.disabled=true;b.textContent='⏳ MENGHAPUS...';
   try{
     const r=await call({action:'deleteAccessEventsRange',fromDate,toDate,pin},30000);
     if(!r.ok)throw Error(r.message);
@@ -696,10 +704,10 @@ async function deleteAccessEventsRange(){
     $('delEvPin').value='';
     dash();try{await commandCenter()}catch(e){}
   }catch(e){setResult('deleteEventsResult','❌ '+e.message,'err')}
-  finally{b.disabled=false}
+  finally{b.disabled=false;b.textContent=o1}
 }
 /* ================= GLOBAL DATE RANGE (GDR) ================= */
-function localISO(d){d=d?new Date(d):new Date();const tz=d.getTimezoneOffset()*60000;return new Date(d.getTime()-tz).toISOString().slice(0,10)}
+function localISO(d){d=d?new Date(d):new Date();return new Date(d.getTime()+7*3600000).toISOString().slice(0,10)}
 let GDR={preset:'day',from:localISO(),to:localISO()};
 function gdrPad(n){return String(n).padStart(2,'0')}
 function gdrISO(d){return `${d.getFullYear()}-${gdrPad(d.getMonth()+1)}-${gdrPad(d.getDate())}`}
@@ -775,7 +783,7 @@ $('search')?.addEventListener('input',searchVehicle);
 $('inBtn')?.addEventListener('click',()=>gateAccess('IN'));
 $('outBtn')?.addEventListener('click',()=>gateAccess('OUT'));
 $('refreshCC')?.addEventListener('click',commandCenter);$('ccFrom')?.addEventListener('change',()=>{if($('ccFrom').value){GDR={...GDR,preset:'custom',from:$('ccFrom').value};gdrRender();commandCenter()}});$('ccTo')?.addEventListener('change',()=>{if($('ccTo').value){GDR={...GDR,preset:'custom',to:$('ccTo').value};gdrRender();commandCenter()}});$('ccType')?.addEventListener('change',commandCenter);$('refreshDashboard')?.addEventListener('click',async()=>{await dash();await commandCenter()});$('dashDate')?.addEventListener('change',dash);$('dashType')?.addEventListener('change',dash);
-async function bulkAuthAll(){if(!confirm('Buat authorization (gate ALL, tanpa batas tanggal) untuk SEMUA kendaraan Master yang belum punya authorization?'))return;const b=$('bulkAuthAll');if(b)b.disabled=true;try{const d=await call({action:'bulkAuthorizeAll',pin:adminPin_()},180000);setResult('authResult','✓ '+d.data.message);await refreshAuth()}catch(e){setResult('authResult','❌ '+e.message,'err')}finally{if(b)b.disabled=false}}
+async function bulkAuthAll(){if(!confirm('Buat authorization (gate ALL, tanpa batas tanggal) untuk SEMUA kendaraan Master yang belum punya authorization?'))return;return busy_('bulkAuthAll','⏳ MEMPROSES...',async()=>{try{const d=await call({action:'bulkAuthorizeAll',pin:adminPin_()},180000);setResult('authResult','✓ '+d.data.message);await refreshAuth()}catch(e){setResult('authResult','❌ '+e.message,'err')}})}
 $('bulkAuthAll')?.addEventListener('click',bulkAuthAll);
 $('createAuth')?.addEventListener('click',createAuth);
 $('refreshAuth')?.addEventListener('click',refreshAuth);
@@ -807,7 +815,7 @@ try{initTypes();if($('dashDate'))$('dashDate').value=localISO();if($('ccFrom'))$
    Jangan tahan UI sampai master/auth/dashboard selesai. Tampilkan cache lokal dulu,
    lalu refresh server di background. Ini menghilangkan startup waterfall:
    master -> health -> dashboard -> auth -> queue. */
-let __vacsReconnectBusy=false,__vacsReconnectDelay=30000;
+let __vacsReconnectBusy=false,__vacsReconnectDelay=30000,__vacsWasLive=false,__vacsLastHydrate=Date.now();
 async function hydrateBackground_(opts={}){
   const tasks=[];
   if(opts.master!==false) tasks.push(syncMasterCache().catch(e=>console.debug('[VACS] background master refresh',e)));
@@ -824,9 +832,12 @@ async function __vacsRecover(){
     const ok=await health();
     if(ok){
       __vacsReconnectDelay=30000;
-      // Refresh independently; one slow endpoint must not block the others.
-      await hydrateBackground_({master:true,gates:true,auth:true,dashboard:true,queue:true});
+      const due=!__vacsWasLive||Date.now()-__vacsLastHydrate>300000;
+      __vacsWasLive=true;
+      if(due){__vacsLastHydrate=Date.now();await hydrateBackground_({master:true,gates:true,auth:true,dashboard:true,queue:true})}
+      else await syncQueue().catch(e=>console.debug('[VACS] queue sync',e));
     }else{
+      __vacsWasLive=false;
       __vacsReconnectDelay=Math.min(__vacsReconnectDelay*2,120000);
     }
   }finally{
@@ -1076,7 +1087,7 @@ robInit();
 })();
 </script>
 <script>
-async function refreshAll(){const b=document.getElementById('refreshAllBtn');if(b)b.disabled=true;try{toast('⏳ Sinkronisasi Supabase → Spreadsheet...');const r=await call({action:'syncSpreadsheet'},90000);if(!r?.ok)throw Error(r?.message||'Sinkronisasi Spreadsheet gagal');const jobs=[syncMasterCache(),refreshAuth(),loadGates(),dash(),commandCenter(),current(),alerts(),exceptions(),audit()];await Promise.allSettled(jobs);if(lastReport)try{await report()}catch(e){console.warn(e)}toast('✅ Spreadsheet tersinkron • '+(r.data?.events||0)+' event')}catch(e){toast('❌ '+e.message)}finally{if(b)b.disabled=false}}
+async function refreshAll(){const b=document.getElementById('refreshAllBtn');if(b&&b.dataset.busy==='1')return;const o0=b?b.textContent:'';if(b){b.dataset.busy='1';b.disabled=true;b.textContent='⏳ SINKRON...'}try{toast('⏳ Sinkronisasi Supabase → Spreadsheet...');const r=await call({action:'syncSpreadsheet'},90000);if(!r?.ok)throw Error(r?.message||'Sinkronisasi Spreadsheet gagal');const jobs=[syncMasterCache(),refreshAuth(),loadGates(),dash(),commandCenter(),current(),alerts(),exceptions(),audit()];await Promise.allSettled(jobs);if(lastReport)try{await report()}catch(e){console.warn(e)}toast('✅ Spreadsheet tersinkron • '+(r.data?.events||0)+' event')}catch(e){toast('❌ '+e.message)}finally{if(b){b.disabled=false;b.textContent=o0;delete b.dataset.busy}}}
 document.getElementById('refreshAllBtn')?.addEventListener('click',refreshAll);
 document.getElementById('masterRefreshBtn')?.addEventListener('click',()=>{try{syncMasterCache()}catch(e){}});
 </script>
