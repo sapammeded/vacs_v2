@@ -660,32 +660,23 @@ async function svgToPng_(svgEl,scale){
   scale=scale||10;
   const vb=svgEl.viewBox&&svgEl.viewBox.baseVal;
   const w=(vb&&vb.width)||760,h=(vb&&vb.height)||240;
-
-  // HD export only: keep normal app/UI unchanged and cap raster memory for Android safety.
+  // HD export only: keep the PDF/Excel layout unchanged and rasterize the chart at high resolution.
+  // 80 MP is a ceiling, not a forced size, so small devices are not asked to allocate excessive memory.
   scale=Math.max(2,Math.min(scale,Math.sqrt(80e6/(w*h)),16000/Math.max(w,h)));
   const pxW=Math.round(w*scale),pxH=Math.round(h*scale);
-
-  // Force the SVG to its final raster dimensions before decoding.
   const clone=svgEl.cloneNode(true);
   clone.setAttribute('width',String(pxW));
   clone.setAttribute('height',String(pxH));
   clone.setAttribute('viewBox',`0 0 ${w} ${h}`);
   clone.setAttribute('preserveAspectRatio','xMidYMid meet');
   clone.removeAttribute('style');
-
   const xml=new XMLSerializer().serializeToString(clone);
   const url='data:image/svg+xml;charset=utf-8;base64,'+btoa(unescape(encodeURIComponent(xml)));
   const img=new Image();
-  img.width=pxW;img.height=pxH;
   await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});
-
-  const cv=document.createElement('canvas');
-  cv.width=pxW;cv.height=pxH;
+  const cv=document.createElement('canvas');cv.width=pxW;cv.height=pxH;
   const ctx=cv.getContext('2d');
-  ctx.imageSmoothingEnabled=true;
-  ctx.imageSmoothingQuality='high';
-  ctx.fillStyle='#ffffff';
-  ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.fillStyle='#ffffff';ctx.fillRect(0,0,pxW,pxH);
   ctx.drawImage(img,0,0,pxW,pxH);
   return{dataUrl:cv.toDataURL('image/png',1.0),w,h,pxW,pxH};
 }
