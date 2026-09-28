@@ -108,7 +108,7 @@ async function api(p,timeout=12000,retries=1){
     }
     // IMPORTANT V2.2_b2 supabase: mutating requests NEVER fall back to bridge after JSONP transport failure.
     // A second transport is a second execution attempt and can create an ambiguous commit.
-    const mutatingAction=new Set(['syncQueue','access','accessAuth','registerVehicle','createAuthorization','updateAuthorizationStatus','deleteVehicle','deleteAccessLog','deleteAccessEventsRange','addGate','setAdminPin','ackAlert','resolveAlert','adminCleanupLongStay','backup']).has(String(p&&p.action||''));
+    const mutatingAction=new Set(['syncQueue','access','accessAuth','registerVehicle','createAuthorization','updateAuthorizationStatus','deleteVehicle','deleteAccessLog','deleteAccessEventsRange','addGate','setAdminPin','ackAlert','resolveAlert','adminCleanupLongStay','backup','syncSpreadsheet','syncSpreadsheetInbound']).has(String(p&&p.action||''));
     if(mutatingAction)continue;
     try{const r=await apiBridgeOnce_(base,p,Math.max(12000,Math.min(timeout,90000)));if(r&&r.ok===true){setApiBase(base);return r}if(r&&r.ok===false)lastErr=Error(r.message||'Bridge request failed')}catch(e){lastErr=e}
   }
@@ -116,7 +116,7 @@ async function api(p,timeout=12000,retries=1){
 }
 async function call(p,t=20000){
   const a=String(p?.action||'');
-  const mutating=new Set(['syncQueue','access','accessAuth','registerVehicle','createAuthorization','updateAuthorizationStatus','deleteVehicle','deleteAccessLog','deleteAccessEventsRange','addGate','setAdminPin','ackAlert','resolveAlert','adminCleanupLongStay','backup']);
+  const mutating=new Set(['syncQueue','access','accessAuth','registerVehicle','createAuthorization','updateAuthorizationStatus','deleteVehicle','deleteAccessLog','deleteAccessEventsRange','addGate','setAdminPin','ackAlert','resolveAlert','adminCleanupLongStay','backup','syncSpreadsheet','syncSpreadsheetInbound']);
   // Never blindly retry a mutating request. The eventId/idempotency layer can
   // recover an uncertain commit, but a transport retry only adds latency and
   // can turn a lost ACK into a second state evaluation.
@@ -1087,7 +1087,7 @@ robInit();
 })();
 </script>
 <script>
-async function refreshAll(){const b=document.getElementById('refreshAllBtn');if(b&&b.dataset.busy==='1')return;const o0=b?b.textContent:'';if(b){b.dataset.busy='1';b.disabled=true;b.textContent='⏳ SINKRON...'}try{toast('⏳ Sinkronisasi Supabase → Spreadsheet...');const r=await call({action:'syncSpreadsheet'},90000);if(!r?.ok)throw Error(r?.message||'Sinkronisasi Spreadsheet gagal');const jobs=[syncMasterCache(),refreshAuth(),loadGates(),dash(),commandCenter(),current(),alerts(),exceptions(),audit()];await Promise.allSettled(jobs);if(lastReport)try{await report()}catch(e){console.warn(e)}toast('✅ Spreadsheet tersinkron • '+(r.data?.events||0)+' event')}catch(e){toast('❌ '+e.message)}finally{if(b){b.disabled=false;b.textContent=o0;delete b.dataset.busy}}}
+async function refreshAll(){const b=document.getElementById('refreshAllBtn');if(b&&b.dataset.busy==='1')return;const o0=b?b.textContent:'';if(b){b.dataset.busy='1';b.disabled=true;b.textContent='⏳ SINKRON...'}try{toast('⏳ Sinkronisasi LOG → Supabase → Spreadsheet...');const r=await call({action:'syncSpreadsheet'},90000);if(!r?.ok)throw Error(r?.message||'Sinkronisasi Spreadsheet gagal');const jobs=[syncMasterCache(),refreshAuth(),loadGates(),dash(),commandCenter(),current(),alerts(),exceptions(),audit()];await Promise.allSettled(jobs);if(lastReport)try{await report()}catch(e){console.warn(e)}toast(r.data?.partial?('⚠️ '+(r.data.errorCount||0)+' baris LOG gagal (LOG tidak ditimpa): '+String((r.data.errors||[])[0]||'')):('✅ Spreadsheet tersinkron • '+(r.data?.events||0)+' event'))}catch(e){toast('❌ '+e.message)}finally{if(b){b.disabled=false;b.textContent=o0;delete b.dataset.busy}}}
 document.getElementById('refreshAllBtn')?.addEventListener('click',refreshAll);
 document.getElementById('masterRefreshBtn')?.addEventListener('click',()=>{try{syncMasterCache()}catch(e){}});
 </script>
@@ -1120,6 +1120,44 @@ function num(t){
 }
 let q=0;const run=()=>{q=0;document.querySelectorAll('table.table:not([data-nn])').forEach(t=>{try{num(t)}catch(e){console.warn(e)}})};
 new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(document.body,{childList:true,subtree:true});run();
+})();
+</script>
+<style id="vacsBtnLoadCss">
+@keyframes vacsSpin{to{transform:rotate(360deg)}}
+button.vacs-loading,.btn.vacs-loading,[role=button].vacs-loading{position:relative;pointer-events:none;cursor:progress;opacity:.72;filter:saturate(.85)}
+button.vacs-loading::after,.btn.vacs-loading::after{content:'';display:inline-block;width:.95em;height:.95em;margin-left:.55em;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:vacsSpin .7s linear infinite;vertical-align:-.15em}
+input.vacs-loading{pointer-events:none;cursor:progress;opacity:.72}
+</style>
+<script id="vacsBtnLoadJs">
+(function(){
+  if(window.__vacsBtnLoad)return;window.__vacsBtnLoad=1;
+  var pending=0,lastAct=Date.now();
+  function begin(){pending++;lastAct=Date.now()}
+  function end(){pending=Math.max(0,pending-1);lastAct=Date.now()}
+  function wrap(name){
+    var f=window[name];if(typeof f!=='function'||f.__vw)return;
+    var w=function(){begin();var r;try{r=f.apply(this,arguments)}catch(e){end();throw e}
+      if(r&&typeof r.then==='function')return r.then(function(v){end();return v},function(e){end();throw e});
+      end();return r};
+    w.__vw=1;try{window[name]=w}catch(e){}
+  }
+  ['api','call'].forEach(wrap);
+  var of=window.fetch;
+  if(typeof of==='function'&&!of.__vw){var nf=function(){begin();var p=of.apply(this,arguments);return p.then(function(v){end();return v},function(e){end();throw e})};nf.__vw=1;window.fetch=nf}
+  function setLoading(b,on){b.classList.toggle('vacs-loading',on);if(on)b.setAttribute('aria-busy','true');else b.removeAttribute('aria-busy')}
+  document.addEventListener('click',function(ev){
+    var t=ev.target&&ev.target.closest?ev.target.closest('button,.btn,[role=button],input[type=button],input[type=submit]'):null;
+    if(!t||t.disabled||t.classList.contains('tab')||t.hasAttribute('data-noload')||t.classList.contains('vacs-loading'))return;
+    var t0=Date.now();
+    // let the original handler run first, then show loading
+    setTimeout(function(){
+      setLoading(t,true);
+      var iv=setInterval(function(){
+        var now=Date.now(),el=now-t0;
+        if((pending===0&&el>=700&&now-lastAct>350)||el>90000||!document.body.contains(t)){clearInterval(iv);setLoading(t,false)}
+      },150);
+    },0);
+  },true);
 })();
 </script>
 </body></html>
